@@ -2,6 +2,7 @@
 core/views.py
 """
 
+from django.http import HttpResponseForbidden
 from django.shortcuts import render
 from core.test_data import (
     MASTERS,
@@ -49,8 +50,9 @@ def orders_list(request):
 
     context = {"orders": orders, "masters": masters, "services": services}
 
-    return render(request, "orders_list.html", context=context)
-
+    if request.user.is_staff:
+        return render(request, "orders_list.html", context=context)
+    return render(request, "403.html")
 
 def order_details(request, order_id):
     """
