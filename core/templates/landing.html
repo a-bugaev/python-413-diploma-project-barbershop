@@ -5,51 +5,15 @@
 {% load dict_filters %}
 {% load time_filters %}
 
-{% block head %}
+{% block styles %}
   <link rel="stylesheet" href="{% static 'css/landing.css' %}">
-{% endblock head %}
+{% endblock styles %}
 
 {% block title %}
-  Барбершоп лендинг
+  BARBER'S HUB
 {% endblock title %}
 
 {% block content %}
-  {% comment %} Navbar {% endcomment %}
-  <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">
-        <i class="bi bi-shop-window me-2"></i>BARBER'S HUB
-      </a>
-      <button class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarNav"
-              aria-controls="navbarNav"
-              aria-expanded="false"
-              aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link active" href="#">Главная</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#services">Услуги</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#masters">Мастера</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#about">О нас</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#contact">Запись</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
   {% comment %} Hero Section {% endcomment %}
   <section class="hero-section text-center">
     <div class="container">
@@ -298,52 +262,4 @@
       </div>
     </div>
   </section>
-  {% comment %} Footer {% endcomment %}
-  <footer class="footer text-center text-md-start">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4 mb-4 mb-md-0 px-5">
-          <h5 class="mb-3">BARBER'S HUB</h5>
-          <p>Мужские стрижки и уход за прической с профессиональным подходом.</p>
-        </div>
-        <div class="col-md-4 mb-4 mb-md-0 px-5">
-          <h5 class="mb-3">Быстрые ссылки</h5>
-          <ul>
-            <li>
-              <a href="#">Главная</a>
-            </li>
-            <li>
-              <a href="#services">Услуги</a>
-            </li>
-            <li>
-              <a href="#masters">Мастера</a>
-            </li>
-            <li>
-              <a href="#about">О нас</a>
-            </li>
-            <li>
-              <a href="#contact">Контакты</a>
-            </li>
-          </ul>
-        </div>
-        <div class="col-md-4 px-5">
-          <h5 class="mb-3">Контакты</h5>
-          <ul>
-            <li>
-              <i class="bi bi-envelope me-2"></i> info@barbershub.kg
-            </li>
-            <li>
-              <i class="bi bi-telephone me-2"></i> +996 99 123 4567
-            </li>
-            <li>
-              <i class="bi bi-geo-alt me-2"></i> ул. Торговая, 123, Бишкек
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="copyright px-5">
-        <p class="mb-0">&#xA9; 2023 Barber's Hub. Все права защищены.</p>
-      </div>
-    </div>
-  </footer>
 {% endblock content %}

@@ -8,67 +8,12 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-    background-color: #f8f9fa;
+    color: var(--dark-color);
+    background-color: var(--light-color);
 }
 
-/* Navigation styles */
-.navbar {
-    background-color: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 1rem 0;
-}
-
-.navbar-brand {
-    font-weight: 700;
-    color: var(--primary-color);
-}
-
-.navbar-nav .nav-link {
-    color: var(--secondary-color);
-    font-weight: 500;
-    margin: 0 0.5rem;
-}
-
-.navbar-nav .nav-link:hover {
-    color: var(--primary-color);
-}
-
-/* Footer styles */
-.footer {
-    background-color: var(--dark-color);
-    color: white;
-    padding: 3rem 0;
-}
-
-.footer h5 {
-    color: var(--primary-color);
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-}
-
-.footer ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-.footer ul li {
-    margin-bottom: 0.5rem;
-}
-
-.footer ul li a {
-    color: var(--light-color);
-    text-decoration: none;
-}
-
-.footer ul li a:hover {
-    color: white;
-}
-
-.copyright {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 1.5rem;
-    margin-top: 2rem;
+html, body, body > div.container {
+    min-height: 100vh;
 }
 
 /* Button styles */
@@ -84,8 +29,8 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: #e24300;
-    border-color: #e24300;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
 .btn-outline-primary {
@@ -95,5 +40,5 @@ body {
 
 .btn-outline-primary:hover {
     background-color: var(--primary-color);
-    color: white;
+    color: var(--light-color);
 }
