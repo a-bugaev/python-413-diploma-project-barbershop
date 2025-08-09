@@ -1,0 +1,4 @@
+{
+    "blank_line_after_tag": "extends,load,include,endblock",
+    "blank_line_before_tag": "block"
+}
