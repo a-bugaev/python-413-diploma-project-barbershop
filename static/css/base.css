@@ -12,8 +12,14 @@ body {
     background-color: var(--light-color);
 }
 
-html, body, body > div.container {
+body > div.container {
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
+}
+
+main {
+    flex-grow: 1;
 }
 
 /* Button styles */
