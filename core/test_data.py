@@ -129,6 +129,15 @@ ORDERS = [
         "services": [3, 6, 7],
         "master_id": 3,
         "date": "2025-03-19",
+        "status": STATUS_CANCELLED,
+    },
+    {
+        "id": 4,
+        "client_name": "Себастьян 'Седой' Крашенов",
+        "services": [4, 8],
+        "master_id": 4,
+        "date": "2025-03-22",
+        "status": STATUS_COMPLETED,
     },
 ]
 

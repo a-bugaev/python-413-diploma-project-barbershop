@@ -1,65 +1,75 @@
-/* Custom styles for order details */
-:root {
-    --primary-color: #d35400;
-    --secondary-color: #2c3e50;
-    --light-color: #ecf0f1;
-    --dark-color: #34495e;
-}
+/* core/static/css/order_details.css */
 
-.text-truncate {
+.order-details-container .text-truncate {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.card-header h6,
-.card-header h5 {
+.order-details-container .card-header h6,
+.order-details-container .card-header h5 {
     font-weight: 600;
 }
 
-.badge {
+.order-details-container .badge {
     font-size: 0.75rem;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--dark-color);
+    color: var(--light-color);
+}
+
+.order-header-card .card-header {
+    background-color: var(--primary-color);
+}
+
+.order-header-card .card-header > * {
+    display: inline;
+    width: auto;
 }
 
 /* Responsive table enhancements */
 @media (max-width: 768px) {
-    .table-responsive {
+    .order-details-container .table-responsive {
         overflow-x: auto;
     }
 }
 
 /* Custom color overrides */
-.bg-primary {
+.order-details-container .bg-primary {
     background-color: var(--primary-color) !important;
 }
 
-.bg-secondary {
+.order-details-container .bg-secondary {
     background-color: var(--secondary-color) !important;
     color: white !important;
 }
 
-.btn-primary {
+.order-details-container .btn-primary {
     background-color: var(--primary-color) !important;
     border-color: var(--primary-color) !important;
 }
 
-.btn-outline-secondary {
+.order-details-container .btn-outline-secondary {
     color: var(--secondary-color) !important;
     border-color: var(--secondary-color) !important;
 }
 
-.text-dark {
+.order-details-container .text-dark {
     color: var(--dark-color) !important;
 }
 
-.bg-light {
+.order-details-container .bg-light {
     background-color: var(--light-color) !important;
 }
 
-.service-description {
+.order-details-container .service-description {
     max-width: 200px;
 }
 
-.master-description {
+.order-details-container .master-description {
     max-width: 500px;
 }

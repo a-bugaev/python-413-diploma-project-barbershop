@@ -6,19 +6,27 @@
 
 {% load static %}
 
-{% block head %}
+{% block styles %}
   <link rel="stylesheet" href="{% static 'css/order_details.css' %}">
-{% endblock head %}
+{% endblock styles %}
 
 {% block content %}
-  <div class="container py-5">
+  <div class="container py-5 order-details-container">
     <div class="row justify-content-center">
       <div class="col-md-10">
         <!-- Order Header -->
-        <div class="card mb-4 shadow-sm">
-          <div class="card-header bg-primary text-white d-flex align-items-center">
+        <div class="card mb-4 shadow-sm order-header-card">
+          <div class="card-header">
             <h5 class="mb-0">Заказ #{{ order.id }}</h5>
-            <span class="badge bg-light text-dark ms-3">{{ order.status }}</span>
+            {% if order.status == "новая" %}
+              <span class="badge bg-info ms-3">{{ order.status|title }}</span>
+            {% elif order.status == "подтвержденная" %}
+              <span class="badge bg-success ms-3">{{ order.status|title }}</span>
+            {% elif order.status == "отмененная" %}
+              <span class="badge bg-danger ms-3">{{ order.status|title }}</span>
+            {% elif order.status == "выполненная" %}
+              <span class="badge bg-secondary ms-3">{{ order.status|title }}</span>
+            {% endif %}
           </div>
           <div class="card-body">
             <div class="row g-2">
@@ -32,16 +40,13 @@
               </div>
               <div class="col-md-6 text-end">
                 <a href="{% url 'orders_list' %}" class="btn btn-outline-secondary me-2 mb-2">Назад</a>
-                <button class="btn btn-primary mb-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editOrderModal">Редактировать</button>
               </div>
             </div>
           </div>
         </div>
         <!-- Services Table -->
         <div class="card mb-4 shadow-sm">
-          <div class="card-header bg-secondary d-flex align-items-center">
+          <div class="card-header d-flex align-items-center">
             <h6 class="mb-0">Услуги</h6>
             {% if services.count == 0 %}
               <span class="badge bg-secondary ms-2">Нет услуг</span>
@@ -78,7 +83,7 @@
         </div>
         <!-- Master Info -->
         <div class="card shadow-sm">
-          <div class="card-header d-flex align-items-center bg-secondary">
+          <div class="card-header d-flex align-items-center">
             <h6 class="mb-0">Мастер</h6>
             {% if master %}<span class="ms-3 badge bg-info text-white">{{ master.work_experience }} лет опыта</span>{% endif %}
           </div>
@@ -104,46 +109,4 @@
       </div>
     </div>
   </div>
-  <!-- Edit Order Modal -->
-  <div class="modal fade" id="editOrderModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header bg-light">
-          <h5 class="modal-title">Редактирование заказа #{{ order.id }}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <!-- Will be populated via JS -->
-        </div>
-      </div>
-    </div>
-  </div>
-  <script>
-      // Edit order modal handler
-      document.addEventListener('DOMContentLoaded', function() {
-          const editBtn = document.querySelector('[data-bs-target="#editOrderModal"]');
-
-          if (editBtn) {
-              editBtn.addEventListener('click', function() {
-                  // Simulate loading form content
-                  setTimeout(() => {
-                      const modalBody = document.querySelector('#editOrderModal .modal-body');
-                      modalBody.innerHTML = `
-          <form>
-            <div class="mb-3">
-              <label>Клиент</label>
-              <input type="text" class="form-control" value="{{ order.client_name }}">
-            </div>
-            <div class="mb-3">
-              <label>Дата</label>
-              <input type="datetime-local" class="form-control" value="{{ order.date|date:"Y-m-d\TH:i" }}">
-            </div>
-            <button type="submit" class="btn btn-success">Сохранить</button>
-          </form>
-        `;
-                  }, 300);
-              });
-          }
-      });
-  </script>
 {% endblock content %}
