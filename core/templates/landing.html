@@ -15,7 +15,7 @@
 
 {% block content %}
   {% comment %} Hero Section {% endcomment %}
-  <section class="hero-section text-center">
+  <section class="hero-section text-center" id="hero">
     <div class="container">
       <img src="{% static 'img/interior.webp' %}"
            alt="Hero Image"
@@ -57,7 +57,7 @@
     </div>
   </section>
   {% comment %} Masters Section {% endcomment %}
-  <section id="masters" class="py-5 bg-light">
+  <section id="masters" class="py-5">
     <div class="container">
       <div class="text-center mb-5">
         <h2 class="display-4">Наши мастера</h2>
@@ -115,16 +115,16 @@
     </div>
   </section>
   {% comment %} Testimonials Section {% endcomment %}
-  <section id="testimonials" class="py-5 bg-light">
+  <section id="testimonials" class="py-5">
     <div class="container">
       <div class="text-center mb-5">
         <h2 class="display-4">Отзывы клиентов</h2>
         <p class="lead text-muted">Наши клиенты говорят о нас</p>
       </div>
-      <div class="row g-4">
-        <div class="col-md-4">
+      <div class="row g-4 d-flex flex-wrap">
+        <div class="col-lg-4">
           <div class="card testimonial-card h-100 text-center">
-            <div class="card-body p-4">
+            <div class="card-body text-center px-0">
               <div class="quote-icon mb-3">
                 <i class="bi bi-quote"></i>
               </div>
@@ -142,9 +142,9 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-4">
           <div class="card testimonial-card h-100">
-            <div class="card-body text-center p-4">
+            <div class="card-body text-center px-0">
               <div class="quote-icon mb-3">
                 <i class="bi bi-quote"></i>
               </div>
@@ -152,7 +152,7 @@
                 "Идеальный уход за бородой. Дмитрий мастерски подстриг и отполировал мою бороду. Теперь
                 она выглядит так, как будто только что выросла!"
               </p>
-              <div class="d-flex justify-content-center align-items-center mt-4">
+              <div class="d-flex justify-content-center align-items-center mt-4 flex-grow">
                 <span class="client-avatar">Д</span>
                 <div class="px-3 text-start">
                   <h5 class="mb-0">Дмитрий</h5>
@@ -162,9 +162,9 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-4">
           <div class="card testimonial-card h-100">
-            <div class="card-body text-center p-4">
+            <div class="card-body text-center px-0">
               <div class="quote-icon mb-3">
                 <i class="bi bi-quote"></i>
               </div>
@@ -172,7 +172,7 @@
                 "Профессиональный сервис и безупречный интерьер. Артем знает все последние модные
                 тенденции и всегда находит идеальный вариант для моей формы лица."
               </p>
-              <div class="d-flex justify-content-center align-items-center mt-4">
+              <div class="d-flex justify-content-center align-items-center mt-4 flex-grow">
                 <span class="client-avatar">И</span>
                 <div class="px-3 text-start">
                   <h5 class="mb-0">Иван</h5>
@@ -220,7 +220,7 @@
         </div>
       </div>
       <div class="row mt-5">
-        <div class="col-md-6 mb-4 mb-md-0">
+        <div class="col-lg-6 my-3 mb-4 mb-md-0">
           <div class="card bg-light shadow">
             <div class="card-body p-4">
               <h4 class="mb-3">Наш адрес</h4>
@@ -236,7 +236,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6 my-3 mb-4 mb-md-0">
           <div class="card shadow">
             <div class="card-body p-4">
               <h4 class="mb-3">Наше расположение</h4>
@@ -248,9 +248,9 @@
                         loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"></iframe>
               </div>
-              <div class="mb-3">
+              <div class="mb-3 my-3">
                 <h5 class="mb-2">Подпишитесь на наши соцсети</h5>
-                <div class="d-flex gap-2 justify-content-center">
+                <div class="d-flex gap-2 justify-content-center my-3">
                   <a href="#" class="btn btn-outline-primary"><i class="bi bi-facebook me-1"></i>Facebook</a>
                   <a href="#" class="btn btn-outline-primary"><i class="bi bi-instagram me-1"></i>Instagram</a>
                   <a href="#" class="btn btn-outline-primary"><i class="bi bi-telegram me-1"></i>Telegram</a>

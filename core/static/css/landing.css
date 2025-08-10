@@ -1,12 +1,12 @@
 .hero-section {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+    background: rgba(0, 0, 0, 0.7);
     background-size: cover;
     background-position: center;
     height: 80vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: var(--light-color);
     text-align: center;
     position: relative;
 }
@@ -23,6 +23,12 @@
     font-size: 3.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2.5rem;
+    }
 }
 
 .hero-section p {
@@ -91,7 +97,7 @@
 }
 
 .testimonial-card {
-    background-color: white;
+    /* background-color: var(--light-color); */
     border-radius: 10px;
     padding: 2rem;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -113,11 +119,25 @@
     background-color: var(--light-color);
 }
 
+#hero,
 #services,
 #masters,
 #about,
 #contact {
     scroll-margin-top: 70px;
+}
+
+@media (max-width: 992px) {
+    #hero {
+        scroll-margin-top: 270px;
+    }
+
+    #services,
+    #masters,
+    #about,
+    #contact {
+        scroll-margin-top: 240px;
+    }
 }
 
 .client-avatar {
@@ -129,21 +149,4 @@
     color: var(--light-color);
     background-color: var(--primary-color);
     text-align: center;
-}
-
-
-.footer .row {
-    display: flex;
-    justify-content: space-between;
-}
-
-.footer .col-md-4 {
-    text-align: left;
-}
-
-@media (max-width: 768px) {
-    .footer .row {
-        flex-direction: column;
-        align-items: center;
-    }
 }
