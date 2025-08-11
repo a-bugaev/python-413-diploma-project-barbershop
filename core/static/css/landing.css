@@ -150,3 +150,7 @@
     background-color: var(--primary-color);
     text-align: center;
 }
+
+.card, .card-header, .card-body {
+    background-color: var(--light-accent);
+}

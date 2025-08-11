@@ -21,9 +21,9 @@
         <li class="nav-item"><script src={% static 'js/header.js' %} ></script>
           <a class="nav-link active" href="{% url "landing" %}#hero">Главная</a>
         </li>
-        {% if user.is_stuff %}
+        {% if request.user.is_staff %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url "orders" %}">Заявки</a>
+          <a class="nav-link" href="{% url "orders_list" %}">Заявки</a>
         </li>
         {% endif %}
         <li class="nav-item">

@@ -1,6 +1,6 @@
 .footer {
     background-color: var(--dark-color);
-    color: white;
+    color: var(--light-accent);
     padding: 3rem 0;
 }
 
@@ -25,7 +25,7 @@
 }
 
 .footer ul li a:hover {
-    color: white;
+    color: var(--light-accent);
 }
 
 .copyright {

@@ -27,7 +27,6 @@ def landing(request):
         "services": SERVICES,
         "masters_imgs": masters_imgs,
         "services_imgs": services_imgs,
-        "user": request.user
     }
     return render(request, "landing.html", context=context)
 
@@ -48,7 +47,7 @@ def orders_list(request):
     masters = MASTERS
     services = SERVICES
 
-    context = {"orders": orders, "masters": masters, "services": services, "user": request.user}
+    context = {"orders": orders, "masters": masters, "services": services}
 
     if request.user.is_staff:
         return render(request, "orders_list.html", context=context)
@@ -77,7 +76,6 @@ def order_details(request, order_id):
         "order": order,
         "master": master,  # master of order
         "services": services,  # service objects of order
-        "user": request.user
     }
 
     return render(request, "order_details.html", context=context)
