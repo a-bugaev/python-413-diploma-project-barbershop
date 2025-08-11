@@ -99,12 +99,12 @@ SERVICES = [
     },
 ]
 
-
-STATUS_NEW = "новая"
-STATUS_CONFIRMED = "подтвержденная"
-STATUS_CANCELLED = "отмененная"
-STATUS_COMPLETED = "выполненная"
-
+STATUS_CHOICES = {
+    "new": "новая",
+    "confirmed": "подтвержденная",
+    "cancelled": "отмененная",
+    "completed": "выполненная",
+}
 
 ORDERS = [
     {
@@ -113,7 +113,7 @@ ORDERS = [
         "services": [1, 10],
         "master_id": 1,
         "date": "2025-03-20",
-        "status": STATUS_NEW,
+        "status": STATUS_CHOICES["new"],
     },
     {
         "id": 2,
@@ -121,7 +121,7 @@ ORDERS = [
         "services": [2],
         "master_id": 2,
         "date": "2025-03-21",
-        "status": STATUS_CONFIRMED,
+        "status": STATUS_CHOICES["confirmed"],
     },
     {
         "id": 3,
@@ -129,7 +129,7 @@ ORDERS = [
         "services": [3, 6, 7],
         "master_id": 3,
         "date": "2025-03-19",
-        "status": STATUS_CANCELLED,
+        "status": STATUS_CHOICES["cancelled"],
     },
     {
         "id": 4,
@@ -137,7 +137,7 @@ ORDERS = [
         "services": [4, 8],
         "master_id": 4,
         "date": "2025-03-22",
-        "status": STATUS_COMPLETED,
+        "status": STATUS_CHOICES["completed"],
     },
 ]
 
