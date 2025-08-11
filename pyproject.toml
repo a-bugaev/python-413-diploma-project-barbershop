@@ -1,5 +1,5 @@
 [project]
-name = "hw_38_django"
+name = "django-barbershub"
 version = "0.1.0"
 description = ""
 authors = [
