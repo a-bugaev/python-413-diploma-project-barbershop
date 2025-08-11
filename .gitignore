@@ -4,3 +4,4 @@
 .venv
 *.sqlite3
 заметки преподавателю.txt
+poetry.lock

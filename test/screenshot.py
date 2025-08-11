@@ -9,6 +9,9 @@ import selenium.common.exceptions as selenium_exceptions
 from selenium.webdriver.common.by import By
 
 def get_saving_path():
+    """
+    get absolute path to screenshots dir in project root
+    """
     this_file = os.path.abspath(__file__)
     this_dir = os.path.dirname(this_file)
     project_root = os.path.dirname(this_dir)
