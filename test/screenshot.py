@@ -4,6 +4,7 @@ take screenshot from each template on each bootstrap breakpoint
 
 import os
 import re
+import pathlib
 import selenium.webdriver as driver
 import selenium.common.exceptions as selenium_exceptions
 from selenium.webdriver.common.by import By
@@ -17,7 +18,9 @@ def get_saving_path():
     this_file = os.path.abspath(__file__)
     this_dir = os.path.dirname(this_file)
     project_root = os.path.dirname(this_dir)
-    return project_root + "/screenshots"
+    saving_path = pathlib.Path(project_root + "/screenshots")
+    saving_path.parent.mkdir(parents=True, exist_ok=True)
+    return saving_path
 
 
 SCREENSHOTS_PATH = get_saving_path()

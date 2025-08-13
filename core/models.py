@@ -64,11 +64,9 @@ class Master(Model):
 
     name: CharField = CharField(max_length=150, verbose_name="Имя")
 
+    bio: TextField = TextField(blank=True, verbose_name="О себе")
+
     photo: ImageField = ImageField(upload_to="masters/", blank=True, verbose_name="Фотография")
-
-    phone: CharField = CharField(max_length=20, verbose_name="Телефон")
-
-    address: CharField = CharField(max_length=255, verbose_name="Адрес")
 
     experience: PositiveIntegerField = PositiveIntegerField(
         verbose_name="Стаж работы", help_text="Опыт работы в годах"
@@ -121,3 +119,16 @@ class Review(Model):
         validators=[MinValueValidator(1), MaxValueValidator(5)], verbose_name="Оценка"
     )
     is_published: BooleanField = BooleanField(default=True, verbose_name="Опубликован")
+
+
+class DecorImages(Model):
+    """
+    Images which is just part of layout should be stored somewhere too
+    """
+
+    image: ImageField = ImageField(
+        upload_to="decor/", blank=True, null=True, verbose_name="Фотография"
+    )
+
+    def __str__(self):
+        return self.image.name

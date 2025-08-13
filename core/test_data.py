@@ -1,6 +1,14 @@
 """
 core/test_data.py
+
+Populates DB with example data for development, testing and demonstration purposes
 """
+
+import pathlib
+import requests
+import tqdm
+
+PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 MASTERS = [
     {
@@ -34,7 +42,6 @@ MASTERS = [
         "work_experience": 9,
     },
 ]
-
 
 SERVICES = [
     {
@@ -141,53 +148,52 @@ ORDERS = [
     },
 ]
 
+GOOGLE_DRIVE_URL = "https://drive.usercontent.google.com/download?id={}&export=download&authuser=0"
 
-def get_order_ids():
-    """
-    возвращает список id заказов
-    """
-    return [order["id"] for order in ORDERS]
-
-
-def get_master_ids():
-    """
-    возвращает список id мастера
-    """
-    return [master["id"] for master in MASTERS]
-
-
-def get_service_ids():
-    """
-    возвращает список id услуг
-    """
-    return [service["id"] for service in SERVICES]
-
-
-def get_order_by_id(order_id):
-    """
-    упрощает сборку контекста для страницы
-    """
-    for order in ORDERS:
-        if order["id"] == order_id:
-            return order
-    return None
+PICS_IDS = {
+    "service": {
+        "1": "1_UAdn_9hxRZwhOFFRoRuEGONQzydt9mA",
+        "2": "1VfQ386HcIVFdZYI9naQamYATBO6VSLRK",
+        "3": "1LY067sa2MQ3zCwIfEYFEV4zngCIOyi-9",
+        "4": "1hkj2Xrig9tFa33vgXKr3oBQGkEJ4B614",
+        "5": "1khhiArfQkznQLkBvCaropMiWkOR29MxH",
+        "6": "1x2GovZdrRXz_fM2HCIY20jq-lHQnRDX6",
+        "7": "1se2Jgx51oZ_6wWBRTOvJScMZ3y7SLe2X",
+        "8": "1C55sqVzWVuFiXGxTWgnSAwCvAWzWzT24",
+        "9": "1pL4ko10WTsdImMLVDcIClcQb0BZ6HK8m",
+        "10": "1YOw4BRreGuqrX5p2ROnZJyNCtMph-KNG",
+    },
+    "master": {
+        "1": "14kuXccnYoBkQszGSx9-kPcXa_zF6Jj4b",
+        "2": "1DZQ74pw6rQOlfXMWrda9_nduKnfbbWUi",
+        "3": "1Tebt1j1QtDnn9z_lF06mTgw118oP06KK",
+        "4": "1XJJoMPZmXpg7Ozk_o6ZGBv8q-vzN9qJv",
+        "5": "1zr7juLCqjMsyVTQAI-a01LFEITz8-6DB",
+    },
+    "decor": {
+        "interior": "1gv8U6yYymdg-BLTQiyJB8Mi-DVg9gegP",
+    },
+}
 
 
-def get_master_by_id(master_id):
+def download_pics():
     """
-    упрощает сборку контекста для страницы
+    Downloads images from googledrive to media/ dir
     """
-    for master in MASTERS:
-        if master["id"] == master_id:
-            return master
-    return None
+    print("wait...")
+    total = sum([len(dir_) for dir_ in PICS_IDS.values()])
+    pbar = tqdm.tqdm(total=total)
+    for dir_name, content_dict in PICS_IDS.items():
 
+        for file_name, file_id in content_dict.items():
+            response = requests.get(GOOGLE_DRIVE_URL.format(file_id), timeout=5)
+            if response.status_code == 200:
+                filepath = pathlib.Path(f"{PROJECT_ROOT}/media/{dir_name}/{file_name}.webp")
+                filepath.parent.mkdir(parents=True, exist_ok=True)
+                with open(filepath, "wb") as f:
+                    f.write(response.content)
+                    pbar.update(1)
+    pbar.close()
+    print("done!\n")
 
-def get_service_by_id(service_id):
-    """
-    упрощает сборку контекста для страницы
-    """
-    for service in SERVICES:
-        if service["id"] == service_id:
-            return service
-    return None
+download_pics()

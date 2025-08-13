@@ -1,6 +1,8 @@
 **.mypy_cache
 **__pycache__
 .venv
+screenshots
+media
 
 .env
 *.sqlite3
