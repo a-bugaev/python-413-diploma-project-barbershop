@@ -51,10 +51,10 @@ class Order(Model):
     )
 
     services: ManyToManyField = ManyToManyField(
-        "Service", related_name="orders", verbose_name="Услуги"
+        "Service", verbose_name="Услуги", symmetrical=False
     )
 
-    appointment_date: DateTimeField = DateTimeField(verbose_name="Дата и время записи")
+    appointment_date: DateTimeField = DateTimeField(verbose_name="Назначенные дата и время")
 
 
 class Master(Model):
@@ -66,14 +66,14 @@ class Master(Model):
 
     bio: TextField = TextField(blank=True, verbose_name="О себе")
 
-    photo: ImageField = ImageField(upload_to="masters/", blank=True, verbose_name="Фотография")
+    photo: ImageField = ImageField(upload_to="master/", blank=True, verbose_name="Фотография")
 
     experience: PositiveIntegerField = PositiveIntegerField(
         verbose_name="Стаж работы", help_text="Опыт работы в годах"
     )
 
-    services: ManyToManyField = ManyToManyField(
-        "Service", related_name="masters", verbose_name="Услуги"
+    services_provided: ManyToManyField = ManyToManyField(
+        "Service", verbose_name="Услуги"
     )
 
     is_active: BooleanField = BooleanField(default=True, verbose_name="Активен")
@@ -96,7 +96,11 @@ class Service(Model):
 
     is_popular: BooleanField = BooleanField(default=False, verbose_name="Популярная услуга")
 
-    image: ImageField = ImageField(upload_to="services/", blank=True, verbose_name="Изображение")
+    image: ImageField = ImageField(upload_to="service/", blank=True, verbose_name="Изображение")
+
+    masters_who_provides: ManyToManyField = ManyToManyField(
+        "Master", verbose_name="Мастера"
+    )
 
 
 class Review(Model):
@@ -110,6 +114,10 @@ class Review(Model):
 
     master: ForeignKey = ForeignKey("Master", on_delete=CASCADE, verbose_name="Мастер")
 
+    services_were_provided: ManyToManyField = ManyToManyField(
+        "Service", verbose_name="Оказанные услуги",  symmetrical=False
+    )
+
     photo: ImageField = ImageField(
         upload_to="reviews/", blank=True, null=True, verbose_name="Фотография"
     )
@@ -121,7 +129,7 @@ class Review(Model):
     is_published: BooleanField = BooleanField(default=True, verbose_name="Опубликован")
 
 
-class DecorImages(Model):
+class DecorImage(Model):
     """
     Images which is just part of layout should be stored somewhere too
     """
