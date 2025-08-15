@@ -6,7 +6,6 @@ media
 
 .env
 *.sqlite3
-notes.txt
 poetry.lock
 gitrepo.txt
 *.zip
