@@ -50,9 +50,7 @@ class Order(Model):
         "Master", on_delete=SET_NULL, null=True, blank=True, verbose_name="Мастер"
     )
 
-    services: ManyToManyField = ManyToManyField(
-        "Service", verbose_name="Услуги", symmetrical=False
-    )
+    services: ManyToManyField = ManyToManyField("Service", verbose_name="Услуги", symmetrical=False)
 
     appointment_date: DateTimeField = DateTimeField(verbose_name="Назначенные дата и время")
 
@@ -72,9 +70,7 @@ class Master(Model):
         verbose_name="Стаж работы", help_text="Опыт работы в годах"
     )
 
-    services_provided: ManyToManyField = ManyToManyField(
-        "Service", verbose_name="Услуги"
-    )
+    services_provided: ManyToManyField = ManyToManyField("Service", verbose_name="Услуги")
 
     is_active: BooleanField = BooleanField(default=True, verbose_name="Активен")
 
@@ -98,9 +94,7 @@ class Service(Model):
 
     image: ImageField = ImageField(upload_to="service/", blank=True, verbose_name="Изображение")
 
-    masters_who_provides: ManyToManyField = ManyToManyField(
-        "Master", verbose_name="Мастера"
-    )
+    masters_who_provides: ManyToManyField = ManyToManyField("Master", verbose_name="Мастера")
 
 
 class Review(Model):
@@ -115,7 +109,7 @@ class Review(Model):
     master: ForeignKey = ForeignKey("Master", on_delete=CASCADE, verbose_name="Мастер")
 
     services_were_provided: ManyToManyField = ManyToManyField(
-        "Service", verbose_name="Оказанные услуги",  symmetrical=False
+        "Service", verbose_name="Оказанные услуги", symmetrical=False
     )
 
     photo: ImageField = ImageField(
@@ -133,6 +127,10 @@ class DecorImage(Model):
     """
     Images which is just part of layout should be stored somewhere too
     """
+
+    name: CharField = CharField(
+        max_length=100, verbose_name="Читаемый идентификатор", default="image_name"
+    )
 
     image: ImageField = ImageField(
         upload_to="decor/", blank=True, null=True, verbose_name="Фотография"

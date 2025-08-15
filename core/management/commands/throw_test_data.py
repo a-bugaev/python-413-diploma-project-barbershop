@@ -119,6 +119,7 @@ class Command(BaseCommand):
                         datetime.time(random.randint(10, 20), 0, 0),
                     )
                 ),
+                status=order["status"]
             )
             inst.save()
             inst.services.set([Service.objects.get(id=id_) for id_ in order["services"]])
@@ -141,7 +142,9 @@ class Command(BaseCommand):
             rel_file_path = (settings.MEDIA_ROOT / "decor" / f"{name}.webp").relative_to(
                 settings.BASE_DIR
             )
-            DecorImage(image=ImageFile(open(rel_file_path, "rb"), name=f"{name}.webp")).save()
+            DecorImage(
+                image=ImageFile(open(rel_file_path, "rb"), name=f"{name}.webp"), name=name
+            ).save()
 
     def populate_db(self):
         """

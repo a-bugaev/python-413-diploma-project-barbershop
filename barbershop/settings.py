@@ -115,6 +115,9 @@ LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = os.getenv("TIME_ZONE")
 
+DATE_FORMAT = '%Y-%m-%d'
+DATETIME_FORMAT = '%Y-%m-%d %H:%M'
+
 USE_I18N = True
 
 USE_TZ = True

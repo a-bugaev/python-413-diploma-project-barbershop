@@ -2,6 +2,7 @@
 создаёт праильные строки для различных лет
 """
 
+from datetime import datetime
 from django import template
 
 register = template.Library()
@@ -18,3 +19,11 @@ def get_year_form(year):
         return f"{year} года"
     else:
         return f"{year} лет"
+
+
+@register.filter
+def local_format(datetime_field: datetime):
+    """
+    Привычный локальный формат даты и времени
+    """
+    return datetime_field.strftime("%Y-%m-%d %H:%M")

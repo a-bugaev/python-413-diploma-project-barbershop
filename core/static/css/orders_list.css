@@ -53,3 +53,7 @@
     background-color: #e24300;
     border-color: #e24300;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}

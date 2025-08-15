@@ -6,6 +6,10 @@
 
 {% load static %}
 
+{% load related_filter %}
+{% load time_filters %}
+{% load display_filter %}
+
 {% block styles %}
   <link rel="stylesheet" href="{% static 'css/order_details.css' %}">
 {% endblock styles %}
@@ -18,14 +22,14 @@
         <div class="card mb-4 shadow-sm order-header-card">
           <div class="card-header">
             <h5 class="mb-0">Заказ #{{ order.id }}</h5>
-            {% if order.status == "новая" %}
-              <span class="badge bg-info ms-3">{{ order.status|title }}</span>
-            {% elif order.status == "подтвержденная" %}
-              <span class="badge bg-success ms-3">{{ order.status|title }}</span>
-            {% elif order.status == "отмененная" %}
-              <span class="badge bg-danger ms-3">{{ order.status|title }}</span>
-            {% elif order.status == "выполненная" %}
-              <span class="badge bg-secondary ms-3">{{ order.status|title }}</span>
+            {% if order.status == "new" %}
+              <span class="badge bg-info ms-3">{{ order|get_display:"status"|title }}</span>
+            {% elif order.status == "confirmed" %}
+              <span class="badge bg-success ms-3">{{ order|get_display:"status"|title }}</span>
+            {% elif order.status == "cancelled" %}
+              <span class="badge bg-danger ms-3">{{ order|get_display:"status"|title }}</span>
+            {% elif order.status == "completed" %}
+              <span class="badge bg-secondary ms-3">{{ order|get_display:"status"|title }}</span>
             {% endif %}
           </div>
           <div class="card-body">
@@ -35,7 +39,7 @@
                   <strong>Клиент:</strong> {{ order.client_name }}
                 </p>
                 <p>
-                  <strong>Дата:</strong> {{ order.date }}
+                  <strong>Дата:</strong> {{ order.appointment_date|local_format }}
                 </p>
               </div>
               <div class="col-md-6 text-end">
@@ -48,10 +52,10 @@
         <div class="card mb-4 shadow-sm">
           <div class="card-header d-flex align-items-center">
             <h6 class="mb-0">Услуги</h6>
-            {% if services.count == 0 %}
+            {% if order.services|get_all|length == 0 %}
               <span class="badge bg-secondary ms-2">Нет услуг</span>
             {% else %}
-              <span class="badge bg-success ms-2">{{ services.count }}</span>
+              <span class="badge bg-success ms-2">{{ order.services|get_all|length }}</span>
             {% endif %}
           </div>
           <div class="card-body">
@@ -66,7 +70,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for service in services %}
+                  {% for service in order.services|get_all %}
                     <tr>
                       <td>{{ service.id }}</td>
                       <td>{{ service.name|default:"Не указано" }}</td>
@@ -85,21 +89,21 @@
         <div class="card shadow-sm">
           <div class="card-header d-flex align-items-center">
             <h6 class="mb-0">Мастер</h6>
-            {% if master %}<span class="ms-3 badge bg-info text-white">{{ master.work_experience }} лет опыта</span>{% endif %}
+            {% if order.master %}<span class="ms-3 badge bg-info text-white">{{ order.master.experience }} лет опыта</span>{% endif %}
           </div>
           <div class="card-body">
-            {% if master %}
+            {% if order.master %}
               <div class="row g-2">
                 <div class="col-md-6">
-                  <h5 class="mb-1">{{ master.name }}</h5>
-                  <p class="text-muted small mb-0">ID: {{ master.id }}</p>
+                  <h5 class="mb-1">{{ order.master.name }}</h5>
+                  <p class="text-muted small mb-0">ID: {{ order.master.id }}</p>
                 </div>
                 <div class="col-md-6 text-end">
                   <span class="badge bg-success me-2">Доступен</span>
                 </div>
               </div>
               <div class="mt-3">
-                <p class="text-truncate master-description">{{ master.description|default:"-" }}</p>
+                <p class="text-truncate master-description">{{ order.master.bio|default:"-" }}</p>
               </div>
             {% else %}
               <p class="text-danger">Мастер не назначен</p>
