@@ -6,6 +6,7 @@ Populates DB with example data for development, testing and demonstration purpos
 
 import os
 import json
+import time
 import pathlib
 import random
 import datetime
@@ -123,6 +124,8 @@ class Command(BaseCommand):
             )
             inst.save()
             inst.services.set([Service.objects.get(id=id_) for id_ in order["services"]])
+            print("5 seconds between orders...")
+            time.sleep(5)
 
     def _add_reviews(self):
         for review in self.reviews_:

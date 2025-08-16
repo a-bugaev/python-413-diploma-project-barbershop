@@ -26,4 +26,4 @@ def local_format(datetime_field: datetime):
     """
     Привычный локальный формат даты и времени
     """
-    return datetime_field.strftime("%Y-%m-%d %H:%M")
+    return datetime_field.strftime("%Y-%m-%d %H:%M:%S")

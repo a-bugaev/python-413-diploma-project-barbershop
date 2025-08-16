@@ -39,7 +39,16 @@
                   <strong>Клиент:</strong> {{ order.client_name }}
                 </p>
                 <p>
-                  <strong>Дата:</strong> {{ order.appointment_date|local_format }}
+                  <strong>Телефон:</strong> {{ order.phone }}
+                </p>
+                <p>
+                  <strong>Создано:</strong> {{ order.appointment_date|local_format }}
+                </p>
+                <p>
+                  <strong>Обновлено:</strong> {{ order.appointment_date|local_format }}
+                </p>
+                <p>
+                  <strong>Назначено на:</strong> {{ order.appointment_date|local_format }}
                 </p>
               </div>
               <div class="col-md-6 text-end">

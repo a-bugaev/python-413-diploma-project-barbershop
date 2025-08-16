@@ -66,7 +66,9 @@
     </div>
     <!-- Card Footer -->
     <div class="card-footer bg-light p-3 d-flex justify-content-between align-items-center">
-      <small class="text-muted">{{ order.appointment_date|local_format }}</small>
+      <small class="text-muted">Создано: {{ order.date_created|local_format }}</small>
+      <small class="text-muted">Обновлено: {{ order.date_updated|local_format }}</small>
+      <small class="text-muted">Назначено на: {{ order.appointment_date|local_format }}</small>
       <a href="./{{ order.id }}" class="btn btn-sm btn-primary">View Details</a>
     </div>
   </div>

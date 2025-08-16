@@ -49,3 +49,21 @@ main {
     background-color: var(--primary-color);
     color: var(--light-color);
 }
+
+.custom-switcher {
+    border-color: var(--primary-color);
+}
+
+.custom-switcher:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.custom-switcher:focus {
+    border-color: rgba(211, 84, 0, 0.5);
+    box-shadow: 0 0 0 .25rem rgba(211, 84, 0, 0.25);
+}
+
+.custom-switcher:focus:not(.custom-switcher:checked) {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='rgba(211, 84, 0, 0.5)'/></svg>");
+}
