@@ -2,7 +2,8 @@
 core/views.py
 """
 
-from django.shortcuts import render
+from django.contrib.auth.views import LogoutView
+from django.shortcuts import render, redirect
 from .models import (
     Order,
     Master,
@@ -38,7 +39,7 @@ def orders_list(request):
     Orders list page
     """
 
-    if request.user.is_staff:
+    if request.user.is_authenticated:
         return render(request, "orders_list.html", context={
             "orders": Order.objects.all(),
         })
@@ -49,6 +50,8 @@ def order_details(request, order_id):
     Order details page
     """
 
-    return render(request, "order_details.html", context={
-        "order": Order.objects.get(id=order_id)
-    })
+    if request.user.is_authenticated:
+        return render(request, "order_details.html", context={
+            "order": Order.objects.get(id=order_id)
+        })
+    return render(request, "403.html")

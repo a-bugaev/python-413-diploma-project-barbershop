@@ -3,6 +3,7 @@
 {% load static %}
 {% load related_filter %}
 {% load time_filters %}
+{% load rating_filter %}
 {% block styles %}
   <link rel="stylesheet" href="{% static 'css/landing.css' %}">
 {% endblock styles %}
@@ -133,6 +134,15 @@
                     {% for service in review.services_were_provided|get_all %}
                       <small class="text-muted">{{ service.name }}</small><br>
                     {% endfor %}
+                    <div class="rating mt-2">
+                      {% for bool in review.rating|get_bool_list_from:5 %}
+                        {% if bool %}
+                          <i class="bi bi-star-fill"></i>
+                        {% else %}
+                          <i class="bi bi-star"></i>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
                   </div>
                 </div>
               </div>

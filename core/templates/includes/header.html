@@ -21,7 +21,7 @@
         <li class="nav-item"><script src={% static 'js/header.js' %} ></script>
           <a class="nav-link active" href="{% url "landing" %}#hero">Главная</a>
         </li>
-        {% if request.user.is_staff %}
+        {% if request.user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link" href="{% url "orders_list" %}">Заявки</a>
         </li>
@@ -41,6 +41,21 @@
         {% if request.user.is_superuser %}
         <li class="nav-item">
           <a class="nav-link" href="{% url "admin:index" %}">Админ</a>
+        </li>
+        {% endif %}
+        {% if not request.user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url "login" %}">Войти</a>
+        </li>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <form action="{% url 'logout' %}" method="post">
+              {% csrf_token %}
+              <button class="nav-link" type="submit">Выйти</button>
+            </form>
+          </a>
         </li>
         {% endif %}
       </ul>

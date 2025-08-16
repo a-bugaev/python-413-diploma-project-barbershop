@@ -26,9 +26,13 @@ from debug_toolbar.toolbar import debug_toolbar_urls  # type: ignore
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("login/", auth_views.LoginView.as_view(), name="login"),
-    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("", include("core.urls")),
 ] + debug_toolbar_urls()
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+class MyLogoutView(auth_views.LogoutView):
+    next_page = 'landing'
+
+urlpatterns += [path("logout/", MyLogoutView.as_view(), name="logout")]
