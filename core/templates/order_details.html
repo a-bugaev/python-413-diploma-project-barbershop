@@ -90,6 +90,12 @@
                     </tr>
                   {% endfor %}
                 </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="3">Итого:</td>
+                    <td class="text-end">{{ order.total_price|floatformat:2 }} ₽</td>
+                  </tr>
+                </tfoot>
               </table>
             </div>
           </div>

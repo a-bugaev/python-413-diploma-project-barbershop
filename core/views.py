@@ -3,7 +3,7 @@ core/views.py
 """
 
 from django.shortcuts import render
-from django.db.models import Q
+from django.db.models import Q, Sum
 from .models import (
     Order,
     Master,
@@ -89,7 +89,7 @@ def order_details(request, order_id):
             context={
                 "order": Order.objects.select_related("master")
                 .prefetch_related("services")
-                .get(id=order_id)
+                .annotate(total_price=Sum("services__price")).get(id=order_id)
             },
         )
     return render(request, "403.html")

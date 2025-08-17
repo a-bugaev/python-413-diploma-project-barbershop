@@ -73,3 +73,7 @@
 .order-details-container .master-description {
     max-width: 500px;
 }
+
+.order-details-container .tfoot td:first-child {
+    colspan
+}
