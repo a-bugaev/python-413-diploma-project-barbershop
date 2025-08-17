@@ -26,7 +26,9 @@ def landing(request):
         context={
             "masters": Master.objects.all(),
             "services": Service.objects.all(),
-            "reviews": Review.objects.all(),
+            "reviews": Review.objects.select_related("master")
+            .prefetch_related("services_were_provided")
+            .all(),
             "interior_pic": DecorImage.objects.get(name="interior").image,
         },
     )
@@ -44,10 +46,10 @@ def orders_list(request):
     Orders list page
     """
 
-    q_text = request.GET.get('q_text', '')
-    checkbox_client_name = request.GET.get('checkbox_client_name', False)
-    checkbox_phone = request.GET.get('checkbox_phone', False)
-    checkbox_comment = request.GET.get('checkbox_comment', False)
+    q_text = request.GET.get("q_text", "")
+    checkbox_client_name = request.GET.get("checkbox_client_name", False)
+    checkbox_phone = request.GET.get("checkbox_phone", False)
+    checkbox_comment = request.GET.get("checkbox_comment", False)
 
     if q_text:
         query = Q()
@@ -58,11 +60,11 @@ def orders_list(request):
         if checkbox_comment:
             query |= Q(comment__icontains=q_text)
 
-        orders = Order.objects.filter(query)
+        orders = Order.objects.select_related("master").prefetch_related("services").filter(query)
     else:
-        orders = Order.objects.all()
+        orders = Order.objects.select_related("master").prefetch_related("services").all()
 
-    orders = orders.order_by('-date_created')
+    orders = orders.order_by("-date_created")
 
     if request.user.is_authenticated:
         return render(
@@ -82,6 +84,12 @@ def order_details(request, order_id):
 
     if request.user.is_authenticated:
         return render(
-            request, "order_details.html", context={"order": Order.objects.get(id=order_id)}
+            request,
+            "order_details.html",
+            context={
+                "order": Order.objects.select_related("master")
+                .prefetch_related("services")
+                .get(id=order_id)
+            },
         )
     return render(request, "403.html")

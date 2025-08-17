@@ -1,7 +1,14 @@
 
 
-- данные в базу вносит скрипт `core/management/commands/throw_test_data.py`
 ```bash
+#1
+poetry install --no-root
+#2
+# create .env with valid values
+#3
+poetry run python ./manage.py migrate
+#4
 poetry run python ./manage.py throw_test_data
+#5
+poetry run python ./manage.py createsuperuser
 ```
-django-extensions установлен для галочки
