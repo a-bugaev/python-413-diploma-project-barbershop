@@ -2,6 +2,7 @@
 create your models here
 """
 
+
 from django.db.models import (
     Model,
     CharField,
@@ -16,14 +17,17 @@ from django.db.models import (
     SET_NULL,
     PositiveSmallIntegerField,
     CASCADE,
+
 )
 from django.core.validators import MinValueValidator, MaxValueValidator
-
 
 class Order(Model):
     """
     Order
     """
+
+    class Meta:
+        verbose_name_plural = "Заказы"
 
     STATUS_CHOICES = {
         "new": "новая",
@@ -55,10 +59,15 @@ class Order(Model):
     appointment_date: DateTimeField = DateTimeField(verbose_name="Назначенные дата и время")
 
 
+
+
 class Master(Model):
     """
     Master
     """
+
+    class Meta:
+        verbose_name_plural = "Мастера"
 
     name: CharField = CharField(max_length=150, verbose_name="Имя")
 
@@ -79,6 +88,9 @@ class Service(Model):
     """
     Service
     """
+
+    class Meta:
+        verbose_name_plural = "Услуги"
 
     name: CharField = CharField(max_length=200, verbose_name="Название")
 
@@ -101,6 +113,9 @@ class Review(Model):
     """
     Review
     """
+
+    class Meta:
+        verbose_name_plural = "Отзывы"
 
     text: TextField = TextField(verbose_name="Текст отзыва")
 

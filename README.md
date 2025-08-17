@@ -11,4 +11,6 @@ poetry run python ./manage.py migrate
 poetry run python ./manage.py throw_test_data
 #5
 poetry run python ./manage.py createsuperuser
+#6
+poetry run python ./manage.py runserver 9000
 ```
