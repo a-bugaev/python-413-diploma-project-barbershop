@@ -3,6 +3,7 @@ core/forms.py
 """
 
 from django import forms
+from django.core.validators import MinValueValidator, MaxValueValidator
 from .models import Order, Review, Master, Service
 
 
@@ -14,12 +15,18 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ("client_name", "text", "master", "rating")
-        widgets = {
-            "client_name": forms.TextInput(attrs={"class": "form-control"}),
-            "text": forms.Textarea(attrs={"class": "form-control"}),
-            "master": forms.Select(attrs={"class": "form-control"}),
-            "rating": forms.NumberInput(attrs={"class": "form-control"}),
-        }
+
+    master: forms.ModelChoiceField = forms.ModelChoiceField(
+        queryset=Master.objects.all(),  # pylint: disable=no-member
+        empty_label="Мастер",
+        label="Мастер",
+    )
+
+    rating = forms.IntegerField(
+        label="Оценка",
+        widget=forms.NumberInput(attrs={"min": 1, "max": 5, "class": "form-control"}),
+        validators=[MinValueValidator(Review.RATING_MIN), MaxValueValidator(Review.RATING_MAX)],
+    )
 
 
 class OrderForm(forms.ModelForm):

@@ -120,6 +120,9 @@ class Review(Model):
     Review
     """
 
+    RATING_MIN = 1
+    RATING_MAX = 5
+
     class Meta:
         verbose_name_plural = "Отзывы"
 
@@ -139,7 +142,7 @@ class Review(Model):
     created_at: DateTimeField = DateTimeField(auto_now_add=True, verbose_name="Дата создания")
 
     rating: PositiveSmallIntegerField = PositiveSmallIntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(5)], verbose_name="Оценка"
+        validators=[MinValueValidator(RATING_MIN), MaxValueValidator(RATING_MAX)], verbose_name="Оценка"
     )
     is_published: BooleanField = BooleanField(default=True, verbose_name="Опубликован")
 

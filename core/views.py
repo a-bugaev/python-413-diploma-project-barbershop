@@ -126,6 +126,13 @@ def order_details(request, order_id):
     return render(request, "403.html")
 
 
+def reviews(request):
+    """
+    форму отзыва надо куда-то засунуть :(
+    """
+    return render(request, "reviews.html")
+
+
 def create_review(request):
     """
     Форма отзыва
@@ -137,4 +144,7 @@ def create_review(request):
             return redirect("thanks")
     else:
         form = ReviewForm()
+
+    print([num for num in range(1, form.instance.RATING_MAX + 1)])
+
     return render(request, "forms/create_review.html", {"form": form})

@@ -24,8 +24,8 @@ def get_errors_for_field(form, form_field_name):
 
 
 @register.filter
-def get_non_fielderrors(form):
+def get_non_field_errors(form):
     """
-    form.non_field_errors() -> form|get_non_fielderrors
+    form.non_field_errors() -> form|get_non_field_errors
     """
     return [str(err_obj) for err_obj in form.non_field_errors]

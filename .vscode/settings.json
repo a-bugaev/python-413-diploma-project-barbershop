@@ -45,6 +45,10 @@
     "[javascript][typescriptreact][typescript][javascriptreact]": {
         "djlint.enableLinting": false
     },
+    "[css][scss]": {
+        "djlint.enableLinting": false,
+        "editor.defaultFormatter": "stylelint.vscode-stylelint"
+    },
     "files.associations": {
         "**/*.html": "html",
         "**/templates/**/*.html": "django-html",

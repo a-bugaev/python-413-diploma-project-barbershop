@@ -4,8 +4,9 @@
 
 const form = document.querySelector(".custom-form")
 const phoneInput = document.querySelector(".phone-input")
-const normalBg = phoneInput.style.backgroundColor;
-
+if (phoneInput) {
+    const normalBg = phoneInput.style.backgroundColor;
+}
 
 var mask = "+7 (___) ___ __ __"
 
@@ -68,31 +69,34 @@ function backspaceFromMask() {
     }
 }
 
-phoneInput.addEventListener("input", (e) => {
+if (phoneInput) {
+    phoneInput.addEventListener("input", (e) => {
 
-    if (e.data == null) {
-        e.preventDefault()
-        backspaceFromMask()
-    }
+        if (e.data == null) {
+            e.preventDefault()
+            backspaceFromMask()
+        }
 
-    if (isDigit(e.data) && !isExtra(e.data)) {
-        addToMask(e.data)
-    }
-    if (!isDigit(e.data) && e.data !== null) {
-        e.preventDefault()
-        highlightWarning(e.target)
-    }
-    e.target.value = mask
-})
+        if (isDigit(e.data) && !isExtra(e.data)) {
+            addToMask(e.data)
+        }
+        if (!isDigit(e.data) && e.data !== null) {
+            e.preventDefault()
+            highlightWarning(e.target)
+        }
+        e.target.value = mask
+    })
+}
 
 function getPhoneValue() {
     return takeOffMask()
 }
 
-form.addEventListener("submit", () => {
-    phoneInput.value = getPhoneValue()
-})
-
+if (form) {
+    form.addEventListener("submit", () => {
+        phoneInput.value = getPhoneValue()
+    })
+}
 /*
 данные о мастерах и услугах воткнуты в json формате в window в соседнем скрипте
 (см. core/templates/forms/create_order.html )
@@ -124,13 +128,49 @@ function adjustOptions(masterDOM, servicesDOM) {
         servicesDOM.appendChild(optionDOM)
     })
 }
+if (masterSelect && servicesSelect && masters_services_arr) {
+    window.addEventListener("load", () => {
+        adjustOptions(masterSelect, servicesSelect)
+    })
+    masterSelect.addEventListener("change", (e) => {
+        adjustOptions(e.target, servicesSelect)
+    })
+    masterSelect.addEventListener("focus", (e) => {
+        adjustOptions(e.target, servicesSelect)
+    })
+}
+/*
+поведение для ввода рейтинга
+*/
 
-window.addEventListener("load", () => {
-    adjustOptions(masterSelect, servicesSelect)
-})
-masterSelect.addEventListener("change", (e) => {
-    adjustOptions(e.target, servicesSelect)
-})
-masterSelect.addEventListener("focus", (e) => {
-    adjustOptions(e.target, servicesSelect)
-})
+const ratingWrapper = document.querySelector(".rating-input-wrapper")
+const ratingInput = ratingWrapper.querySelector("input")
+const ratingStars = [...ratingWrapper.querySelectorAll("i")]
+
+function setRating(value) {
+    ratingInput.value = value
+    ratingStars.forEach(star => {
+        if (/\d/.exec(star.id) <= value) {
+            star.classList.add("light")
+        } else {
+            star.classList.remove("light")
+        }
+    })
+}
+
+if (ratingWrapper) {
+    ratingStars.forEach(star => {
+        star.addEventListener("click", (e) => {
+            setRating(/\d/.exec(e.target.id))
+        })
+        star.addEventListener("click", (e) => {
+            setRating(/\d/.exec(e.target.id))
+        })
+    })
+    ratingInput.addEventListener("change", (e) => {
+        setRating(e.target.value)
+    })
+    ratingInput.addEventListener("focus", (e) => {
+        setRating(e.target.value)
+    })
+}
