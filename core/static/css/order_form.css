@@ -1,0 +1,64 @@
+.order-form {
+    transition: backdround-color 0.15;
+}
+
+.order-form input.form-control::placeholder,
+.order-form textarea.form-control::placeholder {
+    color: #ACAEAF;
+    background-color: transparent;
+}
+
+.order-form .phone-input {
+    padding-right: 36px;
+    letter-spacing: 2px;
+}
+
+.order-form .phone-input::placeholder {
+    text-align: right;
+    letter-spacing: 0;
+}
+
+.order-form .phone-input-wrapper input {
+    letter-spacing: 2px;
+}
+
+
+.order-form .placeholdered-select-wrapper {
+    position: relative;
+}
+
+.order-form .placeholdered-select-wrapper select {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.order-form .placeholdered-select-wrapper option {
+    width: 75%;
+    max-width: 75%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.order-form .placeholdered-select-wrapper span {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 40px;
+    pointer-events: none;
+    background-color: transparent;
+}
+
+.order-form .error-span {
+    color: var(--primary-color)
+}
+
+.order-form .error-highlight {
+    border-color: var(--primary-color);
+}
+
+.order-form .input-group:not(.has-validation)> :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}

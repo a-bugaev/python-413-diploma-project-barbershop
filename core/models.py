@@ -2,7 +2,6 @@
 create your models here
 """
 
-
 from django.db.models import (
     Model,
     CharField,
@@ -17,9 +16,9 @@ from django.db.models import (
     SET_NULL,
     PositiveSmallIntegerField,
     CASCADE,
-
 )
 from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 class Order(Model):
     """
@@ -56,9 +55,9 @@ class Order(Model):
 
     services: ManyToManyField = ManyToManyField("Service", verbose_name="Услуги", symmetrical=False)
 
-    appointment_date: DateTimeField = DateTimeField(verbose_name="Назначенные дата и время")
-
-
+    appointment_date: DateTimeField = DateTimeField(
+        verbose_name="Назначенные дата и время", auto_now_add=True
+    )
 
 
 class Master(Model):
@@ -66,7 +65,11 @@ class Master(Model):
     Master
     """
 
+    def __str__(self):
+        return str(self.name)
+
     class Meta:
+        verbose_name = "Мастер"
         verbose_name_plural = "Мастера"
 
     name: CharField = CharField(max_length=150, verbose_name="Имя")
@@ -88,6 +91,9 @@ class Service(Model):
     """
     Service
     """
+
+    def __str__(self):
+        return str(self.name)
 
     class Meta:
         verbose_name_plural = "Услуги"

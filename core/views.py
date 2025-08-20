@@ -2,7 +2,9 @@
 core/views.py
 """
 
-from django.shortcuts import render
+import json
+
+from django.shortcuts import render, redirect
 from django.db.models import Q, Sum
 from .models import (
     Order,
@@ -11,6 +13,7 @@ from .models import (
     Review,
     DecorImage,
 )
+from .forms import ReviewForm, OrderForm
 
 # pylint: disable=no-member
 
@@ -19,6 +22,31 @@ def landing(request):
     """
     Landing page
     """
+
+    if request.method == "POST":
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("thanks")
+    else:
+        form = OrderForm()
+
+    masters_services_py = []
+    for master_obj in form.fields["master"].queryset:
+        masters_services_py.append(
+            {
+                "master_id": master_obj.id,
+                "master_name": master_obj.name,
+                "master_services": [
+                    {
+                        "service_id": service.id,
+                        "service_name": service.name,
+                    }
+                    for service in master_obj.services_provided.all()
+                ],
+            }
+        )
+    masters_services_json = json.dumps(masters_services_py, indent=4, ensure_ascii=False)
 
     return render(
         request,
@@ -30,6 +58,8 @@ def landing(request):
             .prefetch_related("services_were_provided")
             .all(),
             "interior_pic": DecorImage.objects.get(name="interior").image,
+            "order_form": form,
+            "masters_services_json": masters_services_json,
         },
     )
 
@@ -89,7 +119,22 @@ def order_details(request, order_id):
             context={
                 "order": Order.objects.select_related("master")
                 .prefetch_related("services")
-                .annotate(total_price=Sum("services__price")).get(id=order_id)
+                .annotate(total_price=Sum("services__price"))
+                .get(id=order_id)
             },
         )
     return render(request, "403.html")
+
+
+def create_review(request):
+    """
+    Форма отзыва
+    """
+    if request.method == "POST":
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("thanks")
+    else:
+        form = ReviewForm()
+    return render(request, "forms/create_review.html", {"form": form})

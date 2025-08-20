@@ -1,9 +1,13 @@
 {
+    "djlint.pythonPath": "${workspaceFolder}/.venv/bin/python",
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     "pylint.enabled": true,
     "pylint.path": [
         "${workspaceFolder}/.venv/bin/python",
         "-m",
-        "pylint"
+        "pylint",
+        "--no-docstring-rgx",
+        "^_|Meta"
     ],
     "pylint.interpreter": [
         "${workspaceFolder}/.venv/bin/python"
@@ -16,10 +20,6 @@
     "mypy-type-checker.interpreter": [
         "${workspaceFolder}/.venv/bin/python"
     ],
-    "[django-html]": {
-        "editor.defaultFormatter": "monosans.djlint",
-        "editor.tabSize": 2
-    },
     "git.openRepositoryInParentFolders": "never",
     "emmet.includeLanguages": {
         "django-html": "html",
@@ -27,20 +27,50 @@
     },
     "html.format.templating": true,
     "html.format.unformatted": null,
+    "djlint.enableLinting": true,
+    "[django-html]": {
+        "editor.defaultFormatter": "monosans.djlint",
+        "editor.tabSize": 2,
+        "editor.quickSuggestions": {
+            "other": true,
+            "comments": true,
+            "strings": true
+        },
+        "djlint.enableLinting": true,
+        "djlint.profile": "django"
+    },
+    "[python]": {
+        "djlint.enableLinting": false
+    },
+    "[javascript][typescriptreact][typescript][javascriptreact]": {
+        "djlint.enableLinting": false
+    },
     "files.associations": {
         "**/*.html": "html",
         "**/templates/**/*.html": "django-html",
         "**/templates/**/*": "django-txt",
         "**/requirements{/**,*}.{txt,in}": "pip-requirements"
     },
-    "djlint.formatJs": true,
-    "djlint.formatCss": true,
-    "djlint.ignore": [
-        "H023"
-    ],
     "indentRainbow.ignoreErrorLanguages": [
         "django-html",
         "html"
     ],
-    "djlint.enableLinting": false
+    "djlint.blankLineBeforeTag": [
+        "comment",
+        "include",
+        "block"
+    ],
+    "djlint.blankLineAfterTag": [
+        "extends",
+        "load",
+        "include",
+        "endblock",
+        "endcomment"
+    ],
+    "djlint.formatJs": false,
+    "djlint.formatCss": false,
+    "djlint.ignore": [
+        "H023"
+    ],
+    "djlint.maxLineLength": 79
 }
