@@ -4,6 +4,7 @@ core/views.py
 
 import json
 
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.db.models import Q, Sum
 from .models import (
@@ -27,6 +28,7 @@ def landing(request):
         form = OrderForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.info(request, 'Ваша заявка отправлена')
             return redirect("thanks")
     else:
         form = OrderForm()
@@ -141,10 +143,9 @@ def create_review(request):
         form = ReviewForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.info(request, 'Ваш отзыв отправлен')
             return redirect("thanks")
     else:
         form = ReviewForm()
-
-    print([num for num in range(1, form.instance.RATING_MAX + 1)])
 
     return render(request, "forms/create_review.html", {"form": form})

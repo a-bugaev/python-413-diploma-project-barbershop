@@ -144,8 +144,10 @@ if (masterSelect && servicesSelect && masters_services_arr) {
 */
 
 const ratingWrapper = document.querySelector(".rating-input-wrapper")
-const ratingInput = ratingWrapper.querySelector("input")
-const ratingStars = [...ratingWrapper.querySelectorAll("i")]
+if (ratingWrapper) {
+    const ratingInput = ratingWrapper.querySelector("input")
+    const ratingStars = [...ratingWrapper.querySelectorAll("i")]
+}
 
 function setRating(value) {
     ratingInput.value = value

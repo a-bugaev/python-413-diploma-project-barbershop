@@ -27,7 +27,6 @@
     },
     "html.format.templating": true,
     "html.format.unformatted": null,
-    "djlint.enableLinting": true,
     "[django-html]": {
         "editor.defaultFormatter": "monosans.djlint",
         "editor.tabSize": 2,
