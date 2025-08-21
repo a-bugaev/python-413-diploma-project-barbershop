@@ -4,8 +4,11 @@ core/views.py
 
 import json
 
+from django.views.generic import TemplateView, ListView, DetailView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
 from django.contrib import messages
-from django.shortcuts import render, redirect
 from django.db.models import Q, Sum
 from .models import (
     Order,
@@ -19,133 +22,151 @@ from .forms import ReviewForm, OrderForm
 # pylint: disable=no-member
 
 
-def landing(request):
+class LandingView(TemplateView):
     """
     Landing page
     """
 
-    if request.method == "POST":
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.info(request, 'Ваша заявка отправлена')
-            return redirect("thanks")
-    else:
-        form = OrderForm()
+    template_name = "landing.html"
+    model = Order
+    form_class = OrderForm
+    success_url = reverse_lazy("thanks")
 
-    masters_services_py = []
-    for master_obj in form.fields["master"].queryset:
-        masters_services_py.append(
-            {
-                "master_id": master_obj.id,
-                "master_name": master_obj.name,
-                "master_services": [
-                    {
-                        "service_id": service.id,
-                        "service_name": service.name,
-                    }
-                    for service in master_obj.services_provided.all()
-                ],
-            }
-        )
-    masters_services_json = json.dumps(masters_services_py, indent=4, ensure_ascii=False)
+    def __init__(self):
+        self.order_form = OrderForm()
 
-    return render(
-        request,
-        "landing.html",
-        context={
-            "masters": Master.objects.all(),
-            "services": Service.objects.all(),
-            "reviews": Review.objects.select_related("master")
-            .prefetch_related("services_were_provided")
-            .all(),
-            "interior_pic": DecorImage.objects.get(name="interior").image,
-            "order_form": form,
-            "masters_services_json": masters_services_json,
-        },
-    )
+    def make_additional_json(self):
+        """
+        костыль для формы заявки
+        """
+
+        masters_services_py = []
+        for master_obj in self.order_form.fields["master"].queryset:
+            masters_services_py.append(
+                {
+                    "master_id": master_obj.id,
+                    "master_name": master_obj.name,
+                    "master_services": [
+                        {
+                            "service_id": service.id,
+                            "service_name": service.name,
+                        }
+                        for service in master_obj.services_provided.all()
+                    ],
+                }
+            )
+        return json.dumps(masters_services_py, indent=4, ensure_ascii=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = {
+            **context,
+            **{
+                "masters": Master.objects.all(),
+                "services": Service.objects.all(),
+                "reviews": Review.objects.select_related("master")
+                .prefetch_related("services_were_provided")
+                .all(),
+                "interior_pic": DecorImage.objects.get(name="interior").image,
+                "order_form": self.order_form,
+                "masters_services_json": self.make_additional_json(),
+            },
+        }
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        Обработка формы заявки
+        """
+        self.order_form = OrderForm(request.POST)
+        if self.order_form.is_valid():
+            self.order_form.save()
+            messages.info(self.request, "Ваша заявка отправлена")
+            return HttpResponseRedirect(reverse_lazy("thanks"))
+
+        return self.render_to_response(self.get_context_data())
 
 
-def thanks(request):
+class ThanksView(TemplateView):
     """
     Thanks page
     """
-    return render(request, "thanks.html")
+
+    template_name = "thanks.html"
 
 
-def orders_list(request):
+class OrdersListView(LoginRequiredMixin, ListView):
     """
     Orders list page
     """
 
-    q_text = request.GET.get("q_text", "")
-    checkbox_client_name = request.GET.get("checkbox_client_name", False)
-    checkbox_phone = request.GET.get("checkbox_phone", False)
-    checkbox_comment = request.GET.get("checkbox_comment", False)
+    model = Order
+    template_name = "orders_list.html"
+    context_object_name = "orders"
+    login_url = "login"
 
-    if q_text:
-        query = Q()
-        if checkbox_client_name:
-            query |= Q(client_name__icontains=q_text)
-        if checkbox_phone:
-            query |= Q(phone__icontains=q_text)
-        if checkbox_comment:
-            query |= Q(comment__icontains=q_text)
+    def get_queryset(self):
+        q_text = self.request.GET.get("q_text", "")
+        checkbox_client_name = self.request.GET.get("checkbox_client_name", False)
+        checkbox_phone = self.request.GET.get("checkbox_phone", False)
+        checkbox_comment = self.request.GET.get("checkbox_comment", False)
 
-        orders = Order.objects.select_related("master").prefetch_related("services").filter(query)
-    else:
-        orders = Order.objects.select_related("master").prefetch_related("services").all()
+        if q_text:
+            query = Q()
+            if checkbox_client_name:
+                query |= Q(client_name__icontains=q_text)
+            if checkbox_phone:
+                query |= Q(phone__icontains=q_text)
+            if checkbox_comment:
+                query |= Q(comment__icontains=q_text)
 
-    orders = orders.order_by("-date_created")
+            orders = (
+                Order.objects.select_related("master").prefetch_related("services").filter(query)
+            )
+        else:
+            orders = Order.objects.select_related("master").prefetch_related("services").all()
 
-    if request.user.is_authenticated:
-        return render(
-            request,
-            "orders_list.html",
-            context={
-                "orders": orders,
-            },
-        )
-    return render(request, "403.html")
+        return orders.order_by("-date_created")
 
 
-def order_details(request, order_id):
+class OrderDetailView(LoginRequiredMixin, DetailView):
     """
     Order details page
     """
 
-    if request.user.is_authenticated:
-        return render(
-            request,
-            "order_details.html",
-            context={
-                "order": Order.objects.select_related("master")
-                .prefetch_related("services")
-                .annotate(total_price=Sum("services__price"))
-                .get(id=order_id)
-            },
+    model = Order
+    template_name = "order_details.html"
+    context_object_name = "order"
+    login_url = "login"
+
+    def get_queryset(self, ):
+        return (
+            Order.objects.select_related("master")
+            .prefetch_related("services")
+            .annotate(total_price=Sum("services__price")).all()
         )
-    return render(request, "403.html")
 
 
-def reviews(request):
+class ReviewsView(LoginRequiredMixin, TemplateView):
     """
-    форму отзыва надо куда-то засунуть :(
+    Reviews page
     """
-    return render(request, "reviews.html")
+
+    template_name = "reviews.html"
 
 
-def create_review(request):
+class ReviewCreateView(CreateView):
     """
     Форма отзыва
     """
-    if request.method == "POST":
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.info(request, 'Ваш отзыв отправлен')
-            return redirect("thanks")
-    else:
-        form = ReviewForm()
 
-    return render(request, "forms/create_review.html", {"form": form})
+    model = Review
+    form_class = ReviewForm
+    template_name = "forms/create_review.html"
+    success_url = reverse_lazy("thanks")
+
+    def form_valid(self, form):
+        form.save()
+        messages.info(self.request, "Ваш отзыв отправлен")
+        super().form_valid(form)
+        return HttpResponseRedirect(self.success_url)

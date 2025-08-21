@@ -5,5 +5,4 @@ window.addEventListener("load", () => {
         toastObj = window.bootstrap.Toast.getOrCreateInstance(toastDOM)
         toastObj.show()
     })
-    console.log("tosts inited")
 })

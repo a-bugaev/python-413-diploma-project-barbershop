@@ -6,13 +6,20 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 """
 
 from django.urls import path
-from . import views
+from .views import (
+    LandingView,
+    ThanksView,
+    OrdersListView,
+    OrderDetailView,
+    ReviewsView,
+    ReviewCreateView,
+)
 
 urlpatterns = [
-    path("", views.landing, name="landing"),
-    path("thanks/", views.thanks, name="thanks"),
-    path("orders/", views.orders_list, name="orders_list"),
-    path("orders/<int:order_id>/", views.order_details, name="order_details"),
-    path("reviews/", views.reviews, name="reviews_list"),
-    path("reviews/create/", views.create_review, name="create_review"),
+    path("", LandingView.as_view(), name="landing"),
+    path("thanks/", ThanksView.as_view(), name="thanks"),
+    path("orders/", OrdersListView.as_view(), name="orders_list"),
+    path("orders/<int:pk>/", OrderDetailView.as_view(), name="order_details"),
+    path("reviews/", ReviewsView.as_view(), name="reviews_list"),
+    path("reviews/create/", ReviewCreateView.as_view(), name="create_review"),
 ]

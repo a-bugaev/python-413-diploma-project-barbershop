@@ -33,6 +33,9 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 class MyLogoutView(auth_views.LogoutView):
+    """
+    ___
+    """
     next_page = 'landing'
 
 urlpatterns += [path("logout/", MyLogoutView.as_view(), name="logout")]

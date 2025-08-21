@@ -1,7 +1,6 @@
 {% load static %}
 
 <link rel="stylesheet" href="{% static 'css/header.css' %}">
-
 <nav class="navbar navbar-expand-lg navbar-light sticky-top">
   <div class="container">
     <a class="navbar-brand" href="{% url 'landing' %}">
@@ -18,13 +17,14 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><script src={% static 'js/header.js' %} ></script>
+        <li class="nav-item">
+          <script src={% static 'js/header.js' %}></script>
           <a class="nav-link active" href="{% url "landing" %}#hero">Главная</a>
         </li>
         {% if request.user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url "orders_list" %}">Заявки</a>
-        </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "orders_list" %}">Заявки</a>
+          </li>
         {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="{% url "landing" %}#services">Услуги</a>
@@ -38,28 +38,34 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url "landing" %}#contact">Запись</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url "reviews_list" %}">Отзывы</a>
-        </li>
+        {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "reviews_list" %}">Отзывы</a>
+          </li>
+        {% endif %}
         {% if request.user.is_superuser %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url "admin:index" %}">Админ-панель</a>
-        </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "admin:index" %}">Админ-панель</a>
+          </li>
         {% endif %}
         {% if not request.user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url "login" %}">Войти</a>
-        </li>
+          <li class="nav-item icon-nav-item">
+            <a class="nav-link" href="{% url "login" %}">
+              <i class="bi bi-person-circle"></i>
+            </a>
+          </li>
         {% endif %}
         {% if request.user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <form action="{% url 'logout' %}" method="post">
-              {% csrf_token %}
-              <button class="nav-link" type="submit">Выйти</button>
-            </form>
-          </a>
-        </li>
+          <li class="nav-item icon-nav-item">
+            <a class="nav-link" href="#">
+              <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button class="nav-link" type="submit">
+                  <i class="bi bi-box-arrow-left"></i>
+                </button>
+              </form>
+            </a>
+          </li>
         {% endif %}
       </ul>
     </div>

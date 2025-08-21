@@ -30,3 +30,12 @@
         padding: 0;
     }
 }
+
+.icon-nav-item {
+    font-size: 24px;
+    padding: 0;
+}
+
+.icon-nav-item .nav-link {
+    padding: 0;
+}
