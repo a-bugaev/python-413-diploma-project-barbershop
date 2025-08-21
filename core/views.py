@@ -155,7 +155,7 @@ class ReviewsView(LoginRequiredMixin, TemplateView):
     template_name = "reviews.html"
 
 
-class ReviewCreateView(CreateView):
+class ReviewCreateView(LoginRequiredMixin, CreateView):
     """
     Форма отзыва
     """

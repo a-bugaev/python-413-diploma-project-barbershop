@@ -51,11 +51,19 @@
         {% if not request.user.is_authenticated %}
           <li class="nav-item icon-nav-item">
             <a class="nav-link" href="{% url "login" %}">
-              <i class="bi bi-person-circle"></i>
+              Есть аккаунт?
+              <i class="bi bi-box-arrow-right"></i>
             </a>
+          </li>
+          <li class="nav-item icon-nav-item">
+            <a class="nav-link" href="{% url "register" %}">Регистрация</a>
           </li>
         {% endif %}
         {% if request.user.is_authenticated %}
+          <li class="nav-item icon-nav-item">
+            {{ user.username }}
+            <i class="bi bi-person-circle"></i>
+          </li>
           <li class="nav-item icon-nav-item">
             <a class="nav-link" href="#">
               <form action="{% url 'logout' %}" method="post">

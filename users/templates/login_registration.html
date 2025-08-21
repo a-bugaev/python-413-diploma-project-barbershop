@@ -1,0 +1,6 @@
+{% comment %} users/templates/login_registration.html {% endcomment %}
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  {{ form.non_field_errors }}
+</form>
