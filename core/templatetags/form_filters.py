@@ -8,6 +8,14 @@ register = template.Library()
 
 
 @register.filter
+def get_all(field_with_relations):
+    """
+    Model.related_things_field|get_all
+    """
+    return field_with_relations.all()
+
+
+@register.filter
 def get_field_queryset(form, form_field_name):
     """
     form.fields['key'].queryset -> form.get_field_queryset|form_field_name

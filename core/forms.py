@@ -38,6 +38,10 @@ class OrderForm(forms.ModelForm):
         model = Order
         fields = ("client_name", "phone", "master", "services", "comment")
 
+    client_name: forms.CharField = forms.CharField(
+        label="Имя клиента"
+    )
+
     master: forms.ModelChoiceField = forms.ModelChoiceField(
         queryset=Master.objects.all(),  # pylint: disable=no-member
         empty_label="Мастер",
