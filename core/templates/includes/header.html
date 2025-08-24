@@ -61,10 +61,10 @@
         {% endif %}
         {% if request.user.is_authenticated %}
           <li class="nav-item icon-nav-item">
-            <span class="nav-link">
+            <a class="nav-link" href="{% url "profile_detail" request.user.pk %}">
               <span class="bi">{{ user.username }}</span>
               <i class="bi bi-person-circle"></i>
-            </span>
+            </a>
           </li>
           <li class="nav-item icon-nav-item">
             <a class="nav-link" href="#">

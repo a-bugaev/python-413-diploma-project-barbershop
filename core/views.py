@@ -114,11 +114,11 @@ class OrdersListView(LoginRequiredMixin, ListView):
         if q_text:
             query = Q()
             if checkbox_client_name:
-                query |= Q(client_name__icontains=q_text)
+                query |= Q(client_name__lowerpy__contains=q_text.lower())
             if checkbox_phone:
-                query |= Q(phone__icontains=q_text)
+                query |= Q(phone__lowerpy__contains=q_text)
             if checkbox_comment:
-                query |= Q(comment__icontains=q_text)
+                query |= Q(comment__lowerpy__contains=q_text)
 
             orders = (
                 Order.objects.select_related("master").prefetch_related("services").filter(query)
@@ -139,11 +139,11 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "order"
     login_url = "login"
 
-    def get_queryset(self, ):
+    def get_queryset(self):
         return (
             Order.objects.select_related("master")
             .prefetch_related("services")
-            .annotate(total_price=Sum("services__price")).all()
+            .annotate(total_price=Sum("services__price"))
         )
 
 

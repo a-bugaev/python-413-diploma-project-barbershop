@@ -9,6 +9,8 @@ from django.conf.urls.static import static
 
 from debug_toolbar.toolbar import debug_toolbar_urls  # type: ignore
 
+from . import errors
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("core.urls")),
@@ -17,3 +19,8 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+handler404 = errors.error_404
+handler403 = errors.error_403
+handler500 = errors.error_500

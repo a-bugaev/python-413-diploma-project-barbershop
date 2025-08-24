@@ -11,6 +11,9 @@ class CustomUser(User):
     add email field to default model
     """
 
-    birth_date: models.CharField = models.CharField(
-        max_length=100, null=False, default="email@example.com"
+    avatar: models.ImageField = models.ImageField(null=True, blank=True)
+    birth_date: models.DateTimeField = models.DateTimeField(
+        null=True, blank=True
     )
+    telegram_id: models.CharField = models.CharField(null=True, blank=True)
+    github_id: models.CharField = models.CharField(null=True, blank=True)

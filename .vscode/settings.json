@@ -75,5 +75,14 @@
     "djlint.ignore": [
         "H023"
     ],
-    "djlint.maxLineLength": 79
+    "djlint.maxLineLength": 79,
+    "black-formatter.args": [
+        "-l 79"
+    ],
+    "editor.wordWrapColumn": 79,
+    "[sql]": {
+        "editor.defaultFormatter": "ReneSaarsoo.sql-formatter-vsc"
+    },
+    "SQL-Formatter-VSCode.dialect": "sqlite",
+    "SQL-Formatter-VSCode.expressionWidth": 20
 }

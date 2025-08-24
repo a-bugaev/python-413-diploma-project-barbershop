@@ -16,8 +16,26 @@ from django.db.models import (
     SET_NULL,
     PositiveSmallIntegerField,
     CASCADE,
+    Transform
 )
 from django.core.validators import MinValueValidator, MaxValueValidator
+
+
+class LowerCase(Transform):
+    """
+    кастомный лукап приводит значение из БД в нижний регистр, используя питон:
+        (см. barbershop/custom_db_backend_module)
+    поисковый запрос можно привести к lower() на месте
+        (см. core/views.py - OrdersListView.get_queryset())
+    """
+
+    lookup_name = "lowerpy"
+    function = "LOWERPY"
+    bilateral = True
+
+
+CharField.register_lookup(LowerCase)
+TextField.register_lookup(LowerCase)
 
 
 class Order(Model):
@@ -35,25 +53,40 @@ class Order(Model):
         "completed": "выполненная",
     }
 
-    client_name: CharField = CharField(max_length=100, verbose_name="Имя клиента")
+    client_name: CharField = CharField(
+        max_length=100, verbose_name="Имя клиента"
+    )
 
     phone: CharField = CharField(max_length=20, verbose_name="Телефон")
 
     comment: TextField = TextField(blank=True, verbose_name="Комментарий")
 
     status: CharField = CharField(
-        max_length=50, choices=STATUS_CHOICES, default="new", verbose_name="Статус"
+        max_length=50,
+        choices=STATUS_CHOICES,
+        default="new",
+        verbose_name="Статус",
     )
 
-    date_created: DateTimeField = DateTimeField(auto_now_add=True, verbose_name="Создано")
+    date_created: DateTimeField = DateTimeField(
+        auto_now_add=True, verbose_name="Создано"
+    )
 
-    date_updated: DateTimeField = DateTimeField(auto_now=True, verbose_name="Обновлено")
+    date_updated: DateTimeField = DateTimeField(
+        auto_now=True, verbose_name="Обновлено"
+    )
 
     master: ForeignKey = ForeignKey(
-        "Master", on_delete=SET_NULL, null=True, blank=True, verbose_name="Мастер"
+        "Master",
+        on_delete=SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Мастер",
     )
 
-    services: ManyToManyField = ManyToManyField("Service", verbose_name="Услуги", symmetrical=False)
+    services: ManyToManyField = ManyToManyField(
+        "Service", verbose_name="Услуги", symmetrical=False
+    )
 
     appointment_date: DateTimeField = DateTimeField(
         verbose_name="Назначенные дата и время", auto_now_add=True
@@ -76,15 +109,21 @@ class Master(Model):
 
     bio: TextField = TextField(blank=True, verbose_name="О себе")
 
-    photo: ImageField = ImageField(upload_to="master/", blank=True, verbose_name="Фотография")
+    photo: ImageField = ImageField(
+        upload_to="master/", blank=True, verbose_name="Фотография"
+    )
 
     experience: PositiveIntegerField = PositiveIntegerField(
         verbose_name="Стаж работы", help_text="Опыт работы в годах"
     )
 
-    services_provided: ManyToManyField = ManyToManyField("Service", verbose_name="Услуги")
+    services_provided: ManyToManyField = ManyToManyField(
+        "Service", verbose_name="Услуги"
+    )
 
-    is_active: BooleanField = BooleanField(default=True, verbose_name="Активен")
+    is_active: BooleanField = BooleanField(
+        default=True, verbose_name="Активен"
+    )
 
 
 class Service(Model):
@@ -102,17 +141,25 @@ class Service(Model):
 
     description: TextField = TextField(blank=True, verbose_name="Описание")
 
-    price: DecimalField = DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена")
+    price: DecimalField = DecimalField(
+        max_digits=10, decimal_places=2, verbose_name="Цена"
+    )
 
     duration: PositiveIntegerField = PositiveIntegerField(
         verbose_name="Длительность", help_text="Время выполнения в минутах"
     )
 
-    is_popular: BooleanField = BooleanField(default=False, verbose_name="Популярная услуга")
+    is_popular: BooleanField = BooleanField(
+        default=False, verbose_name="Популярная услуга"
+    )
 
-    image: ImageField = ImageField(upload_to="service/", blank=True, verbose_name="Изображение")
+    image: ImageField = ImageField(
+        upload_to="service/", blank=True, verbose_name="Изображение"
+    )
 
-    masters_who_provides: ManyToManyField = ManyToManyField("Master", verbose_name="Мастера")
+    masters_who_provides: ManyToManyField = ManyToManyField(
+        "Master", verbose_name="Мастера"
+    )
 
 
 class Review(Model):
@@ -128,9 +175,13 @@ class Review(Model):
 
     text: TextField = TextField(verbose_name="Текст отзыва")
 
-    client_name: CharField = CharField(max_length=100, blank=True, verbose_name="Имя клиента")
+    client_name: CharField = CharField(
+        max_length=100, blank=True, verbose_name="Имя клиента"
+    )
 
-    master: ForeignKey = ForeignKey("Master", on_delete=CASCADE, verbose_name="Мастер")
+    master: ForeignKey = ForeignKey(
+        "Master", on_delete=CASCADE, verbose_name="Мастер"
+    )
 
     services_were_provided: ManyToManyField = ManyToManyField(
         "Service", verbose_name="Оказанные услуги", symmetrical=False
@@ -139,13 +190,20 @@ class Review(Model):
     photo: ImageField = ImageField(
         upload_to="reviews/", blank=True, null=True, verbose_name="Фотография"
     )
-    created_at: DateTimeField = DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    created_at: DateTimeField = DateTimeField(
+        auto_now_add=True, verbose_name="Дата создания"
+    )
 
     rating: PositiveSmallIntegerField = PositiveSmallIntegerField(
-        validators=[MinValueValidator(RATING_MIN), MaxValueValidator(RATING_MAX)],
+        validators=[
+            MinValueValidator(RATING_MIN),
+            MaxValueValidator(RATING_MAX),
+        ],
         verbose_name="Оценка",
     )
-    is_published: BooleanField = BooleanField(default=True, verbose_name="Опубликован")
+    is_published: BooleanField = BooleanField(
+        default=True, verbose_name="Опубликован"
+    )
 
 
 class DecorImage(Model):
@@ -154,7 +212,9 @@ class DecorImage(Model):
     """
 
     name: CharField = CharField(
-        max_length=100, verbose_name="Читаемый идентификатор", default="image_name"
+        max_length=100,
+        verbose_name="Читаемый идентификатор",
+        default="image_name",
     )
 
     image: ImageField = ImageField(

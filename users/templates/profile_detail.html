@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+  Личный кабинет
+{% endblock title %}
+
+{% block styles %}
+  {% comment %} <link rel="stylesheet" href="{% static 'css/form.css' %}"> {% endcomment %}
+
+{% endblock styles %}
+
+{% block content %}
+  <div class="container-fluid py-4">
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <h1 class="mb-3">Личный кабинет {{ user }}</h1>
+        <ul class="list-group list-group-horizontal mb-3">
+          <li class="list-group-item w-25">Почта</li>
+          <li class="list-group-item w-25">{{ user.email }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal mb-3">
+          <li class="list-group-item w-25">Аватар</li>
+          <li class="list-group-item w-25">{{ user.avatar }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal mb-3">
+          <li class="list-group-item w-25">Дата рождения</li>
+          <li class="list-group-item w-25">{{ user.birth_date }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal mb-3">
+          <li class="list-group-item w-25">Телеграм</li>
+          <li class="list-group-item w-25">{{ user.telegram_id }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal mb-3">
+          <li class="list-group-item w-25">ГитХаб</li>
+          <li class="list-group-item w-25">{{ user.github_id }}</li>
+        </ul>
+        <a href="{% url "profile_edit" request.user.pk %}"
+           class="btn btn-primary mb-3">Редактировать свои данные</a>
+        <a href="{% url "password_change" %}"
+           class="btn btn-primary mb-3">Изменить пароль</a>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block script %}
+  {% comment %} <script defer src="{% static 'js/forms.js' %}"></script> {% endcomment %}
+
+{% endblock script %}
