@@ -71,3 +71,7 @@ main {
 .toast .toast-body {
     background-color: rgba(211, 84, 0, 0.25);
 }
+
+.text-primary {
+    color: var(--primary-color) !important;
+}

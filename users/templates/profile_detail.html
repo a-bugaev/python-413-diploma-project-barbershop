@@ -6,10 +6,11 @@
   Личный кабинет
 {% endblock title %}
 
-{% block styles %}
-  {% comment %} <link rel="stylesheet" href="{% static 'css/form.css' %}"> {% endcomment %}
-
+{% comment %} {% block styles %}
 {% endblock styles %}
+
+
+{% endcomment %}
 
 {% block content %}
   <div class="container-fluid py-4">
@@ -17,35 +18,67 @@
       <div class="col-10">
         <h1 class="mb-3">Личный кабинет {{ user }}</h1>
         <ul class="list-group list-group-horizontal mb-3">
-          <li class="list-group-item w-25">Почта</li>
-          <li class="list-group-item w-25">{{ user.email }}</li>
+          <li class="list-group-item w-25">Имя</li>
+          <li class="list-group-item w-50">
+            {% if user.first_name %}
+              {{ user.first_name }}
+            {% else %}
+              <span class="text-body-secondary fst-italic">Не указано</span>
+            {% endif %}
+          </li>
         </ul>
         <ul class="list-group list-group-horizontal mb-3">
-          <li class="list-group-item w-25">Аватар</li>
-          <li class="list-group-item w-25">{{ user.avatar }}</li>
+          <li class="list-group-item w-25">Фамилия</li>
+          <li class="list-group-item w-50">
+            {% if user.last_name %}
+              {{ user.last_name }}
+            {% else %}
+              <span class="text-body-secondary fst-italic">Не указано</span>
+            {% endif %}
+          </li>
+        </ul>
+        <ul class="list-group list-group-horizontal mb-3">
+          <li class="list-group-item w-25">Почта</li>
+          <li class="list-group-item w-50">{{ user.email }}</li>
         </ul>
         <ul class="list-group list-group-horizontal mb-3">
           <li class="list-group-item w-25">Дата рождения</li>
-          <li class="list-group-item w-25">{{ user.birth_date }}</li>
+          <li class="list-group-item w-50">
+            {% if user.birth_date %}
+              {{ user.birth_date }}
+            {% else %}
+              <span class="text-body-secondary fst-italic">Не указано</span>
+            {% endif %}
+          </li>
         </ul>
         <ul class="list-group list-group-horizontal mb-3">
           <li class="list-group-item w-25">Телеграм</li>
-          <li class="list-group-item w-25">{{ user.telegram_id }}</li>
+          <li class="list-group-item w-50">
+            {% if user.telegram_id %}
+              {{ user.telegram_id }}
+            {% else %}
+              <span class="text-body-secondary fst-italic">Не указано</span>
+            {% endif %}
+          </li>
         </ul>
         <ul class="list-group list-group-horizontal mb-3">
           <li class="list-group-item w-25">ГитХаб</li>
-          <li class="list-group-item w-25">{{ user.github_id }}</li>
+          <li class="list-group-item w-50">
+            {% if user.github_id %}
+              {{ user.github_id }}
+            {% else %}
+              <span class="text-body-secondary fst-italic">Не указано</span>
+            {% endif %}
+          </li>
         </ul>
-        <a href="{% url "profile_edit" request.user.pk %}"
-           class="btn btn-primary mb-3">Редактировать свои данные</a>
-        <a href="{% url "password_change" %}"
-           class="btn btn-primary mb-3">Изменить пароль</a>
+        <a href="{% url "profile_edit" user.pk %}" class="btn btn-primary mb-3">Редактировать свои данные</a>
+        <a href="{% url "password_change" %}" class="btn btn-primary mb-3">Изменить пароль</a>
       </div>
     </div>
   </div>
 {% endblock content %}
 
-{% block script %}
-  {% comment %} <script defer src="{% static 'js/forms.js' %}"></script> {% endcomment %}
-
+{% comment %} {% block script %}
 {% endblock script %}
+
+{% endcomment %}

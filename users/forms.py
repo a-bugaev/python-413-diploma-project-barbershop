@@ -11,7 +11,7 @@ from django.contrib.auth.forms import (
 )
 from django.forms import ValidationError, ModelForm
 from django import forms
-from .models import CustomUser
+from .models import User
 
 
 class UserLoginForm(AuthenticationForm):
@@ -20,7 +20,7 @@ class UserLoginForm(AuthenticationForm):
     """
 
     class Meta:
-        model = CustomUser
+        model = User
 
     def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -36,7 +36,7 @@ class UserRegistrationForm(UserCreationForm):
     """
 
     class Meta:
-        model = CustomUser
+        model = User
         fields = ["username", "password1", "password2", "email"]
 
     email = forms.CharField(
@@ -62,7 +62,7 @@ class UserRegistrationForm(UserCreationForm):
 
         email = self.cleaned_data["email"]
 
-        if CustomUser.objects.filter(email=email).exists():
+        if User.objects.filter(email=email).exists():
             raise ValidationError(
                 "Пользователь с таким email уже зарегестрирован"
             )
@@ -79,67 +79,59 @@ class UserRegistrationForm(UserCreationForm):
         return user
 
 
-class UserProfileUpdateForm(ModelForm):
+class UserUpdateForm(ModelForm):
     """
     форма редактирования личных данных
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
     class Meta:
-        model = CustomUser
+        model = User
         fields = [
-            "username",
-            "email",
-            "avatar",
+            "first_name",
+            "last_name",
             "birth_date",
             "telegram_id",
             "github_id",
         ]
-        labels = {
-            "avatar": "Аватар",
-        }
 
-    birth_date = forms.DateTimeField(
-        widget=forms.DateTimeInput(attrs={"class": "form-control"}),
-        label="Дата рождения",
-    )
-
-    avatar: forms.ImageField = forms.ImageField(label="Аватар")
+    first_name: forms.CharField = forms.CharField(label="Имя")
+    last_name: forms.CharField = forms.CharField(label="Фамилия")
+    birth_date = forms.DateTimeField(label="Дата рождения")
+    telegram_id: forms.CharField = forms.CharField(label="Телеграм ID")
+    github_id: forms.CharField = forms.CharField(label="ГитХаб ID")
 
 
 class UserPasswordChangeForm(PasswordChangeForm):
     """
-    форма восстановления пароля
+    форма смены пароля
     """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name in self.fields.keys():
-            self.fields[field_name].help_text = ""
-        print(self.fields.keys())
+            if "password" in field_name:
+                self.fields[field_name].help_text = ""
 
 
 class CustomPasswordResetForm(PasswordResetForm):
     """
-    форма восстановления пароля
+    форма запроса восстановления пароля
     """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name in self.fields.keys():
-            self.fields[field_name].help_text = ""
-        print(self.fields.keys())
+            if "password" in field_name:
+                self.fields[field_name].help_text = ""
 
 
 class CustomSetPasswordForm(SetPasswordForm):
     """
-    форма восстановления пароля
+    форма установки нового пароля
     """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name in self.fields.keys():
-            self.fields[field_name].help_text = ""
-        print(self.fields.keys())
+            if "password" in field_name:
+                self.fields[field_name].help_text = ""

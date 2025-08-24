@@ -14,6 +14,7 @@ import datetime
 import requests
 import tqdm
 
+from django.db import connections, router
 from django.core.management.base import BaseCommand
 from django.core.files.images import ImageFile
 from django.conf import settings
@@ -48,7 +49,9 @@ class Command(BaseCommand):
         data taken off to json for readability, now read them
         """
         with open(
-            pathlib.Path(__file__).resolve().parent / "data.json", "r", encoding="utf-8"
+            pathlib.Path(__file__).resolve().parent / "data.json",
+            "r",
+            encoding="utf-8",
         ) as f:
             return json.loads(f.read())
 
@@ -61,10 +64,14 @@ class Command(BaseCommand):
         pbar = tqdm.tqdm(total=total)
         for dir_name, content_dict in self.pics_ids_.items():
             for file_name, file_id in content_dict.items():
-                filepath = pathlib.Path(settings.MEDIA_ROOT / dir_name / f"{file_name}.webp")
+                filepath = pathlib.Path(
+                    settings.MEDIA_ROOT / dir_name / f"{file_name}.webp"
+                )
                 filepath.parent.mkdir(parents=True, exist_ok=True)
                 if not filepath.is_file():
-                    response = requests.get(self.google_drive_url_.format(file_id), timeout=5)
+                    response = requests.get(
+                        self.google_drive_url_.format(file_id), timeout=5
+                    )
                     if response.status_code == 200:
                         with open(filepath, "wb") as f:
                             f.write(response.content)
@@ -81,9 +88,9 @@ class Command(BaseCommand):
 
     def _add_services(self):
         for i, service in enumerate(self.services_, start=1):
-            rel_file_path = (settings.MEDIA_ROOT / "service" / f"{i}.webp").relative_to(
-                settings.BASE_DIR
-            )
+            rel_file_path = (
+                settings.MEDIA_ROOT / "service" / f"{i}.webp"
+            ).relative_to(settings.BASE_DIR)
             Service(
                 id=i,
                 name=service["name"],
@@ -95,9 +102,9 @@ class Command(BaseCommand):
 
     def _add_masters(self):
         for i, master in enumerate(self.masters_, start=1):
-            rel_file_path = (settings.MEDIA_ROOT / "master" / f"{i}.webp").relative_to(
-                settings.BASE_DIR
-            )
+            rel_file_path = (
+                settings.MEDIA_ROOT / "master" / f"{i}.webp"
+            ).relative_to(settings.BASE_DIR)
             inst = Master(
                 id=i,
                 name=master["name"],
@@ -106,24 +113,32 @@ class Command(BaseCommand):
                 experience=master["work_experience"],
             )
             inst.save()
-            inst.services_provided.set([Service.objects.get(id=id_) for id_ in master["services"]])
+            inst.services_provided.set(
+                [Service.objects.get(id=id_) for id_ in master["services"]]
+            )
 
     def _add_orders(self):
         for order in self.orders_:
             inst = Order(
                 client_name=order["client_name"],
-                phone="".join(random.choices([str(n) for n in range(10)], k=11)),
+                phone="".join(
+                    random.choices([str(n) for n in range(10)], k=11)
+                ),
                 master=Master.objects.get(id=order["master_id"]),
                 appointment_date=timezone.make_aware(
                     datetime.datetime.combine(
-                        datetime.datetime.strptime(order["date"], "%Y-%m-%d").date(),
+                        datetime.datetime.strptime(
+                            order["date"], "%Y-%m-%d"
+                        ).date(),
                         datetime.time(random.randint(10, 20), 0, 0),
                     )
                 ),
-                status=order["status"]
+                status=order["status"],
             )
             inst.save()
-            inst.services.set([Service.objects.get(id=id_) for id_ in order["services"]])
+            inst.services.set(
+                [Service.objects.get(id=id_) for id_ in order["services"]]
+            )
             print("5 seconds between orders...")
             time.sleep(5)
 
@@ -142,11 +157,14 @@ class Command(BaseCommand):
 
     def _add_decor_images(self):
         for name in self.pics_ids_["decor"].keys():
-            rel_file_path = (settings.MEDIA_ROOT / "decor" / f"{name}.webp").relative_to(
-                settings.BASE_DIR
-            )
+            rel_file_path = (
+                settings.MEDIA_ROOT / "decor" / f"{name}.webp"
+            ).relative_to(settings.BASE_DIR)
             DecorImage(
-                image=ImageFile(open(rel_file_path, "rb"), name=f"{name}.webp"), name=name
+                image=ImageFile(
+                    open(rel_file_path, "rb"), name=f"{name}.webp"
+                ),
+                name=name,
             ).save()
 
     def populate_db(self):
@@ -159,6 +177,16 @@ class Command(BaseCommand):
         self._add_reviews()
         self._add_decor_images()
 
+    def table_exists(self, model):
+        """
+        falls with exception when tries to clean not existing table, so there the solution
+        """
+        db = router.db_for_write(model)
+        return (
+            model._meta.db_table  # pylint: disable=protected-access
+            in connections[db].introspection.table_names()
+        )
+
     def clear_db(self):
         """
         erase everything before population
@@ -170,7 +198,8 @@ class Command(BaseCommand):
             Review,
             DecorImage,
         ]:
-            model.objects.all().delete()
+            if self.table_exists(model):
+                model.objects.all().delete()
 
     def handle(self, *args, **options):
         (

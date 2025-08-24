@@ -16,12 +16,11 @@ from django.db.models import (
     SET_NULL,
     PositiveSmallIntegerField,
     CASCADE,
-    Transform
+    Transform,
 )
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-
-class LowerCase(Transform):
+class LowerCase(Transform):  # type: ignore # pylint: disable=abstract-method
     """
     кастомный лукап приводит значение из БД в нижний регистр, используя питон:
         (см. barbershop/custom_db_backend_module)

@@ -4,7 +4,7 @@
 context:
 form
 field
-type  text|password|select|select_mult|textarea
+type  text|password|select|select_mult|textarea|date|file
 {% endcomment %}
 
 {% if type == "text" %}
@@ -16,6 +16,7 @@ type  text|password|select|select_mult|textarea
            {% if field.field.required %}required=""{% endif %}
            id="{{ field.id_for_label }}"
            placeholder="{{ field.label }}"
+           {% if field.value %}value="{{ field.value }}"{% endif %}
            aria-label="{{ field.label }}">
     {% if form|get_errors_for_field:field.html_name|length > 0 %}
       {% for error_msg in form|get_errors_for_field:field.html_name %}
@@ -26,14 +27,17 @@ type  text|password|select|select_mult|textarea
 {% endif %}
 {% if type == "password" %}
   <div class="input-group mb-3">
-    <input class="form-control {% if form|get_errors_for_field:field.html_name|length > 0 %}error-highlight{% endif %}"
-           name="{{ field.html_name }}"
-           maxlength="{{ field.field.maxlength }}"
-           type="password"
-           {% if field.field.required %}required=""{% endif %}
-           id="{{ field.id_for_label }}"
-           placeholder="{{ field.label }}"
-           aria-label="{{ field.label }}">
+    <div class="w-100">
+      <input class="form-control {% if form|get_errors_for_field:field.html_name|length > 0 %}error-highlight{% endif %}"
+             name="{{ field.html_name }}"
+             maxlength="{{ field.field.maxlength }}"
+             type="password"
+             {% if field.field.required %}required=""{% endif %}
+             id="{{ field.id_for_label }}"
+             {% if field.value %}value="{{ field.value }}"{% endif %}
+             placeholder="{{ field.label }}"
+             aria-label="{{ field.label }}">
+    </div>
     {% if form|get_errors_for_field:field.html_name|length > 0 %}
       {% for error_msg in form|get_errors_for_field:field.html_name %}
         <span class="form-text error-span">{{ error_msg }}</span>
@@ -48,6 +52,7 @@ type  text|password|select|select_mult|textarea
       <select name="{{ field.html_name }}"
               {% if field.field.required %}required=""{% endif %}
               id="{{ field.id_for_label }}"
+              {% if field.value %}value="{{ field.value }}"{% endif %}
               class="form-select {% if form|get_errors_for_field:field.html_name|length > 0 %}error-highlight{% endif %}">
         {% for item in form|get_field_queryset:field.html_name %}
           <option value="{{ item.id }}">{{ item }}</option>
@@ -69,6 +74,7 @@ type  text|password|select|select_mult|textarea
               {% if field.field.required %}required=""{% endif %}
               id="{{ field.id_for_label }}"
               multiple=""
+              {% if field.value %}value="{{ field.value }}"{% endif %}
               aria-describedby="{{ field.id_for_label }}_error"
               class="form-select {% if form|get_errors_for_field:field.html_name|length > 0 %}error-highlight{% endif %}">
         {% for item in form|get_field_queryset:field.html_name %}
@@ -88,9 +94,44 @@ type  text|password|select|select_mult|textarea
     <textarea name="{{ field.html_name }}"
               class="form-control {% if form|get_errors_for_field:field.html_name|length > 0 %}error-highlight{% endif %}"
               rows="5"
+              {% if field.value %}value="{{ field.value }}"{% endif %}
               maxlength="{{ field.field.maxlength }}"
               id="{{ field.id_for_label }}"
               placeholder="{{ field.label }}"></textarea>
+    {% if form|get_errors_for_field:field.html_name|length > 0 %}
+      {% for error_msg in form|get_errors_for_field:field.html_name %}
+        <span class="form-text error-span">{{ error_msg }}</span>
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endif %}
+{% if type == "date" %}
+  <div class="datetime-input-wrapper input-group mb-3">
+    <div class="w-100">
+      <input class="form-control {% if form|get_errors_for_field:field.html_name|length > 0 %}error-highlight{% endif %}"
+             type="date"
+             name="{{ field.html_name }}"
+             id="{{ field.id_for_label }}"
+             {% if field.field.required %}required=""{% endif %}
+             {% if field.value %}value="{{ field.value|date:"Y-m-d" }}"{% endif %}
+             placeholder="{{ field.label }}">
+    </div>
+    {% if form|get_errors_for_field:field.html_name|length > 0 %}
+      {% for error_msg in form|get_errors_for_field:field.html_name %}
+        <span class="form-text error-span">{{ error_msg }}</span>
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endif %}
+{% if type == "file" %}
+  <div class="file-input-wrapper input-group mb-3">
+    <input class="form-control {% if form|get_errors_for_field:field.html_name|length > 0 %}error-highlight{% endif %}"
+           type="file"
+           name="{{ field.html_name }}"
+           placeholder="{{ field.label }}"
+           {% if field.value %}value="{{ field.value }}"{% endif %}
+           {% if field.field.required %}required=""{% endif %}
+           id="{{ field.id_for_label }}">
     {% if form|get_errors_for_field:field.html_name|length > 0 %}
       {% for error_msg in form|get_errors_for_field:field.html_name %}
         <span class="form-text error-span">{{ error_msg }}</span>

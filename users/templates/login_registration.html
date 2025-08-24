@@ -52,9 +52,13 @@ email
               <span class="form-text error-span">{{ error_msg }}</span>
             {% endfor %}
           {% endif %}
-          <button type="submit" class="btn btn-primary mx-auto d-block">
+          <button type="submit" class="btn btn-primary d-block mx-auto mb-3">
             {{ button_text }}
           </button>
+          {% if request.path == "/users/login/" %}
+            <a href="{% url 'password_reset' %}"
+               class="btn btn-link text-primary btn-sm d-block w-100">Восстановить пароль</a>
+          {% endif %}
         </form>
       </div>
     </div>

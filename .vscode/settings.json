@@ -73,7 +73,8 @@
     "djlint.formatJs": false,
     "djlint.formatCss": false,
     "djlint.ignore": [
-        "H023"
+        "H023",
+        "H006"
     ],
     "djlint.maxLineLength": 79,
     "black-formatter.args": [

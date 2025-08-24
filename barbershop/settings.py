@@ -151,3 +151,5 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # EMAIL_USE_TLS
 # EMAIL_HOST_USER
 # EMAIL_HOST_PASSWORD
+
+AUTH_USER_MODEL = "users.User"

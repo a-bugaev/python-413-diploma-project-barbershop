@@ -21,7 +21,11 @@ class AppointmentFilter(admin.SimpleListFilter):
     parameter_name = "Клиент ожидается"
 
     def lookups(self, request, model_admin):
-        return (("today", "Сегодня"), ("tomorrow", "Завтра"), {"this_week", "На этой неделе"})
+        return (
+            ("today", "Сегодня"),
+            ("tomorrow", "Завтра"),
+            {"this_week", "На этой неделе"},
+        )
 
     def queryset(self, request, queryset):
         if self.value() == "today":
@@ -38,13 +42,15 @@ class AppointmentFilter(admin.SimpleListFilter):
             start_of_week = date.today() - date.today().weekday()
             end_of_week = start_of_week + timedelta(days=6)
             return queryset.filter(
-                Q(date_field__gte=start_of_week) & Q(date_field__lte=end_of_week)
+                Q(date_field__gte=start_of_week)
+                & Q(date_field__lte=end_of_week)
             )
 
 
 class ServiceInline(admin.TabularInline):
     model = Order.services.through
     extra = 1
+
 
 class OrderAdmin(ModelAdmin):
     list_display = [
@@ -139,13 +145,9 @@ class ReviewInline(admin.TabularInline):
     model = Review
     extra = 0
 
+
 class MasterAdmin(ModelAdmin):
-    list_display = [
-        "name",
-        "experience",
-        "is_active",
-        "services_count"
-    ]
+    list_display = ["name", "experience", "is_active", "services_count"]
 
     def get_queryset(self, request):
         # кастомный столбец с количеством услуг
@@ -157,18 +159,15 @@ class MasterAdmin(ModelAdmin):
     def services_count(self, obj):
         return obj.services_count
 
-    list_filter = [
-        "is_active",
-        "services_provided"
-    ]
+    list_filter = ["is_active", "services_provided"]
 
-    search_fields = [
-        "name"
-    ]
+    search_fields = ["name"]
 
     inlines = [ReviewInline]
 
+
 admin.site.register(Master, MasterAdmin)
+
 
 class ServiceAdmin(ModelAdmin):
     list_display = [
@@ -182,9 +181,8 @@ class ServiceAdmin(ModelAdmin):
         "is_popular",
     ]
 
-    search_fields = [
-        "name"
-    ]
+    search_fields = ["name"]
+
 
 admin.site.register(Service, ServiceAdmin)
 

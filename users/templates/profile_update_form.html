@@ -9,8 +9,7 @@
 {% endblock title %}
 
 {% block styles %}
-  {% comment %} <link rel="stylesheet" href="{% static 'css/form.css' %}"> {% endcomment %}
-
+  <link rel="stylesheet" href="{% static 'css/form.css' %}">
 {% endblock styles %}
 
 {% block content %}
@@ -18,22 +17,15 @@
     <div class="row justify-content-center">
       <div class="col-4">
         <h1>{{ title }}</h1>
-        <form method="post" class="custom-form">
+        <form method="post" class="custom-form" enctype="multipart/form-data">
           {% csrf_token %}
-          <div class="input-group mb-3">
-          {{ form.avatar.label }}
-          {{ form.avatar }}
-          {{ form.avatar.errors }}
-          </div>
-          {% include "includes/form_field.html" with form=form field=form.username type="text" %}
-          {% include "includes/form_field.html" with form=form field=form.email type="text" %}
+
+          {% include "includes/form_field.html" with form=form field=form.first_name type="text" %}
+          {% include "includes/form_field.html" with form=form field=form.last_name type="text" %}
           {% include "includes/form_field.html" with form=form field=form.telegram_id type="text" %}
           {% include "includes/form_field.html" with form=form field=form.github_id type="text" %}
-          <div class="input-group mb-3">
-          {{ form.birth_date.label }}
-          {{ form.birth_date }}
-          {{ form.birth_date.errors }}
-          </div>
+          {% include "includes/form_field.html" with form=form field=form.birth_date type="date" %}
+
           <button type="submit" class="btn btn-primary mx-auto d-block">
             {{ button_text }}
           </button>
@@ -44,6 +36,5 @@
 {% endblock content %}
 
 {% block script %}
-  {% comment %} <script defer src="{% static 'js/forms.js' %}"></script> {% endcomment %}
-
+  <script defer src="{% static 'js/forms.js' %}"></script>
 {% endblock script %}
